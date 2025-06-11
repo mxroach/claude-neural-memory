@@ -50,6 +50,17 @@
             font-size: 1em;
             font-weight: 500;
         }
+
+        .cors-notice {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            border: 1px solid #2196f3;
+            color: #0d47a1;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 0.9em;
+            text-align: center;
+        }
         
         .neural-status {
             display: flex;
@@ -274,6 +285,12 @@
             color: #856404;
             border: 1px solid #ffeaa7;
         }
+
+        .status.info {
+            background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%);
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
         
         .neural-visualization {
             margin-top: 20px;
@@ -310,6 +327,31 @@
         .strength-high { background: #d4edda; color: #155724; }
         .strength-medium { background: #fff3cd; color: #856404; }
         .strength-low { background: #f8d7da; color: #721c24; }
+
+        .debug-info {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            font-family: monospace;
+            font-size: 0.85em;
+            display: none;
+        }
+
+        .test-section {
+            background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
+            border: 1px solid #ffc107;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .test-section h4 {
+            color: #e65100;
+            margin-bottom: 10px;
+            font-size: 1em;
+        }
         
         @media (max-width: 768px) {
             .container {
@@ -392,6 +434,10 @@
             <h1>🧠 Claude 신경망 기억 시스템</h1>
             <div class="subtitle">Neural Knowledge Graph + Intelligent Memory Management</div>
         </div>
+
+        <div class="cors-notice">
+            ℹ️ CORS 정책으로 인해 응답 확인이 제한됩니다. 전송 후 Zapier에서 "Find new records"를 클릭하여 확인하세요.
+        </div>
         
         <div class="neural-status">
             <div class="status-item">
@@ -410,6 +456,14 @@
                 <div class="status-value" id="lastUpdate">Never</div>
                 <div class="status-label">Last Update</div>
             </div>
+        </div>
+
+        <div class="test-section">
+            <h4>🧪 빠른 테스트</h4>
+            <p>아래 버튼으로 Zapier 연결을 먼저 테스트해보세요.</p>
+            <button class="btn btn-neural" onclick="testConnection()" style="margin-top: 10px; padding: 8px 15px; font-size: 13px;">
+                🔗 연결 테스트
+            </button>
         </div>
         
         <div class="form-section">
@@ -518,6 +572,11 @@
         </div>
         
         <div id="status" class="status"></div>
+
+        <div id="debugInfo" class="debug-info">
+            <h4>🔍 Debug Information</h4>
+            <div id="debugContent"></div>
+        </div>
         
         <div id="neuralVisualization" class="neural-visualization">
             <h3>🔗 신경망 연결 상태</h3>
@@ -588,13 +647,73 @@
             }
         }
 
+        // 디버그 정보 표시
+        function showDebugInfo(info) {
+            const debugDiv = document.getElementById('debugInfo');
+            const debugContent = document.getElementById('debugContent');
+            debugContent.innerHTML = `
+                <strong>Request Time:</strong> ${new Date().toLocaleString()}<br>
+                <strong>Webhook URL:</strong> ${info.webhookUrl ? info.webhookUrl.substring(0, 50) + '...' : 'Not set'}<br>
+                <strong>Payload Size:</strong> ${info.payloadSize || 'Unknown'} bytes<br>
+                <strong>Mode:</strong> ${info.mode || 'smart'}<br>
+                <strong>Status:</strong> ${info.status || 'Sent'}
+            `;
+            debugDiv.style.display = 'block';
+        }
+
         // 로딩 오버레이
         function showLoading(show = true) {
             const overlay = document.getElementById('loadingOverlay');
             overlay.style.display = show ? 'flex' : 'none';
         }
 
-        // 신경망 처리 메인 함수
+        // 연결 테스트 함수
+        async function testConnection() {
+            const webhookUrl = document.getElementById('webhookUrl').value.trim();
+            
+            if (!webhookUrl) {
+                showStatus('❌ Webhook URL을 먼저 입력해주세요!', 'error');
+                return;
+            }
+
+            showStatus('🔗 연결 테스트 중...', 'processing', 0);
+
+            try {
+                const testPayload = {
+                    test: true,
+                    message: "Connection test from Claude Neural Memory System",
+                    timestamp: new Date().toISOString(),
+                    action: "connection_test"
+                };
+
+                const response = await fetch(webhookUrl, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(testPayload)
+                });
+
+                showDebugInfo({
+                    webhookUrl: webhookUrl,
+                    payloadSize: JSON.stringify(testPayload).length,
+                    mode: 'test',
+                    status: 'Sent (CORS-limited response)'
+                });
+
+                showStatus('✅ 테스트 요청 전송됨! Zapier에서 "Find new records"를 클릭하여 확인하세요.', 'info');
+
+            } catch (error) {
+                showStatus(`❌ 연결 오류: ${error.message}`, 'error');
+                showDebugInfo({
+                    webhookUrl: webhookUrl,
+                    status: `Error: ${error.message}`
+                });
+            }
+        }
+
+        // 신경망 처리 메인 함수 (CORS 해결 버전)
         async function processNeural(mode) {
             const conversation = document.getElementById('conversation').value.trim();
             const webhookUrl = document.getElementById('webhookUrl').value.trim();
@@ -614,7 +733,7 @@
             buttons.forEach(btn => btn.disabled = true);
             
             showLoading(true);
-            showStatus('🧠 신경망 처리 중... 평균 30초-1분 소요됩니다', 'processing', 0);
+            showStatus('🧠 신경망 처리 요청 전송 중...', 'processing', 0);
 
             try {
                 // 설정 수집
@@ -643,39 +762,49 @@
                     version: '2.0'
                 };
 
+                // CORS 우회 방법 사용
                 const response = await fetch(webhookUrl, {
                     method: 'POST',
+                    mode: 'no-cors', // CORS 우회
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(payload)
                 });
 
-                if (response.ok) {
-                    // 통계 업데이트
-                    const stats = {
-                        nodeCount: Math.floor(Math.random() * 20) + 15, // 실제로는 서버에서 받아옴
-                        connectionCount: Math.floor(Math.random() * 50) + 25,
-                        memoryUsage: Math.floor(Math.random() * 3) + 4.2,
-                        lastUpdate: new Date().toLocaleString('ko-KR')
-                    };
-                    
-                    localStorage.setItem('neural_stats', JSON.stringify(stats));
-                    updateNeuralStatus();
-                    
-                    // 연결 시각화 업데이트
-                    updateConnectionVisualization();
-                    
-                    showStatus('✅ 신경망 업데이트 완료! 지능형 연결 생성됨', 'success');
-                    
-                    // 성공 시 텍스트 영역 클리어
-                    document.getElementById('conversation').value = '';
-                } else {
-                    throw new Error(`HTTP ${response.status}`);
-                }
+                // no-cors 모드에서는 응답 상태를 확인할 수 없으므로 성공으로 가정
+                showDebugInfo({
+                    webhookUrl: webhookUrl,
+                    payloadSize: JSON.stringify(payload).length,
+                    mode: mode,
+                    status: 'Sent successfully (CORS-limited response)'
+                });
+
+                // 통계 업데이트 (시뮬레이션)
+                const stats = {
+                    nodeCount: Math.floor(Math.random() * 20) + 15,
+                    connectionCount: Math.floor(Math.random() * 50) + 25,
+                    memoryUsage: (Math.random() * 3 + 4.2).toFixed(1),
+                    lastUpdate: new Date().toLocaleString('ko-KR')
+                };
+                
+                localStorage.setItem('neural_stats', JSON.stringify(stats));
+                updateNeuralStatus();
+                
+                // 연결 시각화 업데이트
+                updateConnectionVisualization();
+                
+                showStatus('✅ 신경망 업데이트 요청 전송 완료!\n\nZapier에서 "Find new records"를 클릭하여 처리 결과를 확인하세요.', 'success');
+                
+                // 성공 시 텍스트 영역 클리어
+                document.getElementById('conversation').value = '';
 
             } catch (error) {
-                showStatus(`❌ 오류 발생: ${error.message}`, 'error');
+                showStatus(`❌ 전송 오류: ${error.message}`, 'error');
+                showDebugInfo({
+                    webhookUrl: webhookUrl,
+                    status: `Error: ${error.message}`
+                });
                 console.error('Neural processing error:', error);
             } finally {
                 // UI 재활성화
