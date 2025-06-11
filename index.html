@@ -13,11 +13,10 @@
         }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             padding: 10px;
-            color: #2c3e50;
         }
         
         .container {
@@ -25,29 +24,28 @@
             margin: 0 auto;
             background: rgba(255, 255, 255, 0.95);
             border-radius: 20px;
-            padding: 25px;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
-            backdrop-filter: blur(15px);
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
         }
         
         .header {
             text-align: center;
-            margin-bottom: 25px;
-            position: relative;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e9ecef;
         }
         
         .header h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
             font-size: 2.2em;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 8px;
             font-weight: 700;
         }
         
         .header .subtitle {
-            color: #7f8c8d;
-            font-size: 1em;
+            color: #6c757d;
+            font-size: 1.1em;
             font-weight: 500;
         }
 
@@ -65,9 +63,10 @@
         .neural-status {
             display: flex;
             justify-content: space-around;
-            margin-bottom: 20px;
-            padding: 15px;
+            padding: 20px;
+            margin-bottom: 25px;
             background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border: 1px solid #dee2e6;
             border-radius: 12px;
             flex-wrap: wrap;
             gap: 10px;
@@ -83,19 +82,40 @@
             font-size: 1.4em;
             font-weight: 700;
             color: #495057;
+            margin-bottom: 5px;
         }
         
         .status-label {
-            font-size: 0.8em;
+            font-size: 0.85em;
             color: #6c757d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 500;
             margin-top: 2px;
         }
         
         .form-section {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 15px;
+            padding: 25px;
             margin-bottom: 20px;
+            border: 1px solid #e9ecef;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
         }
         
         .form-section h3 {
+            color: #495057;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+            font-weight: 600;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
             margin-bottom: 12px;
             color: #2c3e50;
             font-size: 1.1em;
@@ -113,6 +133,7 @@
             font-family: 'SF Mono', 'Monaco', 'Inconsolata', monospace;
             resize: vertical;
             transition: all 0.3s ease;
+            background: #fff;
             line-height: 1.5;
         }
         
@@ -122,7 +143,7 @@
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
             transform: translateY(-1px);
         }
-        
+
         .controls {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -134,10 +155,13 @@
             padding: 15px 20px;
             border: none;
             border-radius: 12px;
-            font-size: 15px;
+            font-size: 1em;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            margin: 5px;
             position: relative;
             overflow: hidden;
         }
@@ -173,6 +197,7 @@
         }
         
         .btn:disabled {
+            background: linear-gradient(135deg, #adb5bd 0%, #868e96 100%);
             opacity: 0.6;
             cursor: not-allowed;
             transform: none;
@@ -226,6 +251,7 @@
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 10px;
+            margin-top: 20px;
         }
         
         .memory-input {
@@ -245,7 +271,7 @@
             border-radius: 6px;
             font-size: 0.9em;
         }
-        
+
         .webhook-input {
             width: 100%;
             padding: 12px;
@@ -255,11 +281,16 @@
         }
         
         .status {
-            margin-top: 20px;
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
             padding: 15px;
+            margin: 20px 0;
             border-radius: 12px;
             display: none;
             font-weight: 500;
+            text-align: center;
+            transition: all 0.3s ease;
+            white-space: pre-line;
             animation: slideIn 0.3s ease;
         }
         
@@ -286,59 +317,6 @@
             border: 1px solid #ffeaa7;
         }
 
-        .status.info {
-            background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%);
-            color: #0c5460;
-            border: 1px solid #bee5eb;
-        }
-        
-        .neural-visualization {
-            margin-top: 20px;
-            padding: 20px;
-            background: linear-gradient(135deg, #f1f3f4 0%, #e8eaed 100%);
-            border-radius: 12px;
-            display: none;
-        }
-        
-        .connection-matrix {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 10px;
-            margin-top: 15px;
-        }
-        
-        .connection-node {
-            background: white;
-            padding: 12px;
-            border-radius: 8px;
-            border-left: 4px solid #667eea;
-            font-size: 0.9em;
-        }
-        
-        .connection-strength {
-            display: inline-block;
-            padding: 2px 6px;
-            border-radius: 10px;
-            font-size: 0.7em;
-            font-weight: 600;
-            margin-top: 5px;
-        }
-        
-        .strength-high { background: #d4edda; color: #155724; }
-        .strength-medium { background: #fff3cd; color: #856404; }
-        .strength-low { background: #f8d7da; color: #721c24; }
-
-        .debug-info {
-            background: #f8f9fa;
-            border: 1px solid #dee2e6;
-            border-radius: 8px;
-            padding: 15px;
-            margin-top: 15px;
-            font-family: monospace;
-            font-size: 0.85em;
-            display: none;
-        }
-
         .test-section {
             background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
             border: 1px solid #ffc107;
@@ -353,9 +331,61 @@
             font-size: 1em;
         }
         
+        .neural-visualization {
+            background: linear-gradient(135deg, #f1f3f4 0%, #e8eaed 100%);
+            border-radius: 12px;
+            display: none;
+        }
+        
+        .connection-matrix {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .connection-node {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            border: 1px solid #e9ecef;
+            transition: all 0.3s ease;
+        }
+        
+        .connection-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #495057;
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            font-size: 0.9em;
+        }
+        
+        .connection-strength {
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 0.7em;
+            font-weight: 600;
+            margin-top: 5px;
+        }
+        
+        .strength-high { background: #d4edda; color: #155724; }
+        .strength-medium { background: #fff3cd; color: #856404; }
+        .strength-low { background: #f8d7da; color: #721c24; }
+        
+        .debug-info {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+            font-size: 0.9em;
+            display: none;
+        }
+        
         @media (max-width: 768px) {
             .container {
-                padding: 15px;
                 margin: 5px;
             }
             
@@ -468,10 +498,12 @@
         
         <div class="form-section">
             <h3>📝 Claude 대화 내용</h3>
-            <textarea 
-                id="conversation" 
-                rows="10" 
-                placeholder="Claude와의 전체 대화 내용을 여기에 붙여넣으세요...
+            <div class="form-group">
+                <label for="conversation">전체 대화 내용을 붙여넣어 주세요</label>
+                <textarea 
+                    id="conversation" 
+                    rows="10" 
+                    placeholder="Claude와의 전체 대화 내용을 여기에 붙여넣으세요...
 
 🧠 신경망 시스템이 자동으로:
 • 정보 노드 추출 및 분류
@@ -481,7 +513,8 @@
 • 패턴 인식 및 학습
 
 ⚡ 단축키: Ctrl/Cmd + Enter로 바로 실행"
-            ></textarea>
+                ></textarea>
+            </div>
         </div>
         
         <div class="controls">
@@ -551,7 +584,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="setting-group" style="margin-top: 15px;">
                 <h4>💾 Memory Limits</h4>
                 <div class="memory-limits">
@@ -589,7 +622,27 @@
         document.addEventListener('DOMContentLoaded', () => {
             loadSettings();
             updateNeuralStatus();
+            setupEventListeners();
+            console.log('🚀 Claude 신경망 시스템 로드 완료');
         });
+
+        function setupEventListeners() {
+            // 설정 변경 시 자동 저장
+            ['webhookUrl', 'hotMemoryLimit', 'warmMemoryLimit', 'maxConnections'].forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.addEventListener('change', saveSettings);
+                }
+            });
+
+            // 키보드 단축키
+            document.getElementById('conversation').addEventListener('keydown', (e) => {
+                if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                    e.preventDefault();
+                    processNeural('smart');
+                }
+            });
+        }
 
         // 설정 저장/로드
         function loadSettings() {
@@ -615,14 +668,6 @@
                 }
             });
         }
-
-        // 설정 변경 시 자동 저장
-        ['webhookUrl', 'hotMemoryLimit', 'warmMemoryLimit', 'maxConnections'].forEach(id => {
-            const element = document.getElementById(id);
-            if (element) {
-                element.addEventListener('change', saveSettings);
-            }
-        });
 
         // 신경망 상태 업데이트
         function updateNeuralStatus() {
@@ -702,7 +747,7 @@
                     status: 'Sent (CORS-limited response)'
                 });
 
-                showStatus('✅ 테스트 요청 전송됨! Zapier에서 "Find new records"를 클릭하여 확인하세요.', 'info');
+                showStatus('✅ 테스트 요청 전송됨! Zapier에서 "Find new records"를 클릭하여 확인하세요.', 'success');
 
             } catch (error) {
                 showStatus(`❌ 연결 오류: ${error.message}`, 'error');
@@ -713,16 +758,17 @@
             }
         }
 
-        // 신경망 처리 메인 함수 (CORS 해결 버전)
+        // 신경망 처리 메인 함수 (neuralSettings 문제 해결)
         async function processNeural(mode) {
             const conversation = document.getElementById('conversation').value.trim();
             const webhookUrl = document.getElementById('webhookUrl').value.trim();
             
+            // 유효성 검사
             if (!conversation) {
                 showStatus('❌ 대화 내용을 입력해주세요!', 'error');
                 return;
             }
-            
+
             if (!webhookUrl) {
                 showStatus('❌ Webhook URL을 설정해주세요!', 'error');
                 return;
@@ -736,7 +782,7 @@
             showStatus('🧠 신경망 처리 요청 전송 중...', 'processing', 0);
 
             try {
-                // 설정 수집
+                // 🔧 neuralSettings를 문자열로 변환 (핵심 수정)
                 const neuralSettings = {
                     smartConnections: document.getElementById('smartConnections').checked,
                     weightCalculation: document.getElementById('weightCalculation').checked,
@@ -753,14 +799,22 @@
                     }
                 };
 
+                // ✅ 문제 해결: neuralSettings를 JSON 문자열로 변환
                 const payload = {
                     conversation: conversation,
-                    timestamp: new Date().toISOString(),
+                    neuralSettingsJson: JSON.stringify(neuralSettings, null, 2), // 🎯 이게 핵심!
                     mode: mode,
-                    neuralSettings: neuralSettings,
+                    timestamp: new Date().toISOString(),
                     action: 'neural_memory_update',
-                    version: '2.0'
+                    version: '2.1'
                 };
+
+                console.log('📤 수정된 전송 데이터:', {
+                    conversationLength: conversation.length,
+                    neuralSettingsSize: payload.neuralSettingsJson.length,
+                    mode: mode,
+                    version: payload.version
+                });
 
                 // CORS 우회 방법 사용
                 const response = await fetch(webhookUrl, {
@@ -777,7 +831,7 @@
                     webhookUrl: webhookUrl,
                     payloadSize: JSON.stringify(payload).length,
                     mode: mode,
-                    status: 'Sent successfully (CORS-limited response)'
+                    status: 'Sent successfully (neuralSettings fixed)'
                 });
 
                 // 통계 업데이트 (시뮬레이션)
@@ -794,7 +848,7 @@
                 // 연결 시각화 업데이트
                 updateConnectionVisualization();
                 
-                showStatus('✅ 신경망 업데이트 요청 전송 완료!\n\nZapier에서 "Find new records"를 클릭하여 처리 결과를 확인하세요.', 'success');
+                showStatus('✅ 신경망 업데이트 요청 전송 완료!\n\n⚡ neuralSettings 문제 해결됨!\nZapier에서 "Find new records"를 클릭하여 처리 결과를 확인하세요.', 'success');
                 
                 // 성공 시 텍스트 영역 클리어
                 document.getElementById('conversation').value = '';
@@ -850,14 +904,6 @@
             
             visualization.style.display = 'block';
         }
-
-        // 키보드 단축키
-        document.getElementById('conversation').addEventListener('keydown', (e) => {
-            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
-                e.preventDefault();
-                processNeural('smart');
-            }
-        });
 
         // PWA 지원
         if ('serviceWorker' in navigator) {
