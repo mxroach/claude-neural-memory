@@ -3,921 +3,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🧠 Claude 신경망 기억 시스템</title>
-    <link rel="manifest" href="manifest.json">
+    <title>🧠 Claude 신경망 기억 시스템 - 테스트</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 10px;
-        }
-        
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            backdrop-filter: blur(10px);
-        }
-        
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #e9ecef;
-        }
-        
-        .header h1 {
-            color: #2c3e50;
-            margin-bottom: 10px;
-            font-size: 2.2em;
-            font-weight: 700;
-        }
-        
-        .header .subtitle {
-            color: #6c757d;
-            font-size: 1.1em;
-            font-weight: 500;
-        }
-
-        .cors-notice {
-            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
-            border: 1px solid #2196f3;
-            color: #0d47a1;
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            font-size: 0.9em;
-            text-align: center;
-        }
-        
-        .neural-status {
-            display: flex;
-            justify-content: space-around;
-            padding: 20px;
-            margin-bottom: 25px;
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            border: 1px solid #dee2e6;
-            border-radius: 12px;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        
-        .status-item {
-            text-align: center;
-            flex: 1;
-            min-width: 100px;
-        }
-        
-        .status-value {
-            font-size: 1.4em;
-            font-weight: 700;
-            color: #495057;
-            margin-bottom: 5px;
-        }
-        
-        .status-label {
-            font-size: 0.85em;
-            color: #6c757d;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-weight: 500;
-            margin-top: 2px;
-        }
-        
-        .form-section {
-            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-            border-radius: 15px;
-            padding: 25px;
-            margin-bottom: 20px;
-            border: 1px solid #e9ecef;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-        }
-        
-        .form-section h3 {
-            color: #495057;
-            margin-bottom: 15px;
-            font-size: 1.3em;
-            font-weight: 600;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 12px;
-            color: #2c3e50;
-            font-size: 1.1em;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        textarea {
-            width: 100%;
-            padding: 15px;
-            border: 2px solid #e0e6ed;
-            border-radius: 12px;
-            font-size: 13px;
-            font-family: 'SF Mono', 'Monaco', 'Inconsolata', monospace;
-            resize: vertical;
-            transition: all 0.3s ease;
-            background: #fff;
-            line-height: 1.5;
-        }
-        
-        textarea:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-            transform: translateY(-1px);
-        }
-
-        .controls {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-        
-        .btn {
-            padding: 15px 20px;
-            border: none;
-            border-radius: 12px;
-            font-size: 1em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-            margin: 5px;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-            transition: left 0.5s;
-        }
-        
-        .btn:hover::before {
-            left: 100%;
-        }
-        
-        .btn-neural {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-        
-        .btn-force {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            color: white;
-        }
-        
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
-        }
-        
-        .btn:disabled {
-            background: linear-gradient(135deg, #adb5bd 0%, #868e96 100%);
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
-        
-        .advanced-settings {
-            background: #f8f9fa;
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-        
-        .settings-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-top: 15px;
-        }
-        
-        .setting-group {
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px solid #e9ecef;
-        }
-        
-        .setting-group h4 {
-            margin-bottom: 10px;
-            font-size: 0.9em;
-            color: #495057;
-        }
-        
-        .checkbox-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-        }
-        
-        .checkbox-item {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 0.85em;
-        }
-        
-        .checkbox-item input[type="checkbox"] {
-            transform: scale(1.1);
-        }
-        
-        .memory-limits {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-top: 20px;
-        }
-        
-        .memory-input {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-        
-        .memory-input label {
-            font-size: 0.8em;
-            color: #6c757d;
-        }
-        
-        .memory-input input {
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 0.9em;
-        }
-
-        .webhook-input {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #e0e6ed;
-            border-radius: 8px;
-            font-size: 14px;
-        }
-        
-        .status {
-            background: #f8f9fa;
-            border: 1px solid #dee2e6;
-            padding: 15px;
-            margin: 20px 0;
-            border-radius: 12px;
-            display: none;
-            font-weight: 500;
-            text-align: center;
-            transition: all 0.3s ease;
-            white-space: pre-line;
-            animation: slideIn 0.3s ease;
-        }
-        
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .status.success {
-            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-        
-        .status.error {
-            background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-        
-        .status.processing {
-            background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
-            color: #856404;
-            border: 1px solid #ffeaa7;
-        }
-
-        .test-section {
-            background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
-            border: 1px solid #ffc107;
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 20px;
-        }
-
-        .test-section h4 {
-            color: #e65100;
-            margin-bottom: 10px;
-            font-size: 1em;
-        }
-        
-        .neural-visualization {
-            background: linear-gradient(135deg, #f1f3f4 0%, #e8eaed 100%);
-            border-radius: 12px;
-            display: none;
-        }
-        
-        .connection-matrix {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 10px;
-            margin-top: 15px;
-        }
-        
-        .connection-node {
-            background: white;
-            border-radius: 10px;
-            padding: 15px;
-            border: 1px solid #e9ecef;
-            transition: all 0.3s ease;
-        }
-        
-        .connection-title {
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: #495057;
-            padding: 12px;
-            border-radius: 8px;
-            border-left: 4px solid #667eea;
-            font-size: 0.9em;
-        }
-        
-        .connection-strength {
-            padding: 2px 6px;
-            border-radius: 10px;
-            font-size: 0.7em;
-            font-weight: 600;
-            margin-top: 5px;
-        }
-        
-        .strength-high { background: #d4edda; color: #155724; }
-        .strength-medium { background: #fff3cd; color: #856404; }
-        .strength-low { background: #f8d7da; color: #721c24; }
-        
-        .debug-info {
-            background: #f8f9fa;
-            border: 1px solid #dee2e6;
-            border-radius: 8px;
-            padding: 15px;
-            margin-top: 20px;
-            font-size: 0.9em;
-            display: none;
-        }
-        
-        @media (max-width: 768px) {
-            .container {
-                margin: 5px;
-            }
-            
-            .controls {
-                grid-template-columns: 1fr;
-            }
-            
-            .settings-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .neural-status {
-                flex-direction: column;
-                gap: 10px;
-            }
-            
-            .memory-limits {
-                grid-template-columns: 1fr;
-            }
-            
-            .header h1 {
-                font-size: 1.8em;
-            }
-        }
-        
-        .loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-        
-        .loading-content {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            text-align: center;
-            max-width: 300px;
-        }
-        
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #667eea;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 15px;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+        body { font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5; }
+        .container { max-width: 600px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; }
+        input, textarea { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; }
+        textarea { height: 150px; }
+        button { width: 100%; padding: 15px; background: #007cba; color: white; border: none; border-radius: 5px; cursor: pointer; margin: 5px 0; }
+        button:hover { background: #005a87; }
+        .status { padding: 10px; margin: 10px 0; border-radius: 5px; display: none; }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
     </style>
 </head>
 <body>
-    <div class="loading-overlay" id="loadingOverlay">
-        <div class="loading-content">
-            <div class="spinner"></div>
-            <div>🧠 신경망 처리 중...</div>
-            <div style="font-size: 0.8em; color: #666; margin-top: 10px;">
-                평균 30초-1분 소요
-            </div>
-        </div>
-    </div>
-
     <div class="container">
-        <div class="header">
-            <h1>🧠 Claude 신경망 기억 시스템</h1>
-            <div class="subtitle">Neural Knowledge Graph + Intelligent Memory Management</div>
-        </div>
-
-        <div class="cors-notice">
-            ℹ️ CORS 정책으로 인해 응답 확인이 제한됩니다. 전송 후 Zapier에서 "Find new records"를 클릭하여 확인하세요.
-        </div>
+        <h1>🧠 신경망 테스트</h1>
         
-        <div class="neural-status">
-            <div class="status-item">
-                <div class="status-value" id="nodeCount">0</div>
-                <div class="status-label">Active Nodes</div>
-            </div>
-            <div class="status-item">
-                <div class="status-value" id="connectionCount">0</div>
-                <div class="status-label">Connections</div>
-            </div>
-            <div class="status-item">
-                <div class="status-value" id="memoryUsage">0KB</div>
-                <div class="status-label">Memory Usage</div>
-            </div>
-            <div class="status-item">
-                <div class="status-value" id="lastUpdate">Never</div>
-                <div class="status-label">Last Update</div>
-            </div>
-        </div>
-
-        <div class="test-section">
-            <h4>🧪 빠른 테스트</h4>
-            <p>아래 버튼으로 Zapier 연결을 먼저 테스트해보세요.</p>
-            <button class="btn btn-neural" onclick="testConnection()" style="margin-top: 10px; padding: 8px 15px; font-size: 13px;">
-                🔗 연결 테스트
-            </button>
-        </div>
+        <input type="url" id="webhookUrl" placeholder="Webhook URL" />
+        <textarea id="conversation" placeholder="대화 내용"></textarea>
         
-        <div class="form-section">
-            <h3>📝 Claude 대화 내용</h3>
-            <div class="form-group">
-                <label for="conversation">전체 대화 내용을 붙여넣어 주세요</label>
-                <textarea 
-                    id="conversation" 
-                    rows="10" 
-                    placeholder="Claude와의 전체 대화 내용을 여기에 붙여넣으세요...
-
-🧠 신경망 시스템이 자동으로:
-• 정보 노드 추출 및 분류
-• 기존 지식과 연결 강도 계산
-• 메모리 사용량 최적화
-• 지능형 가지치기 실행
-• 패턴 인식 및 학습
-
-⚡ 단축키: Ctrl/Cmd + Enter로 바로 실행"
-                ></textarea>
-            </div>
-        </div>
-        
-        <div class="controls">
-            <button class="btn btn-neural" onclick="processNeural('smart')">
-                🧠 신경망 업데이트
-            </button>
-            <button class="btn btn-force" onclick="processNeural('rebuild')">
-                🔄 네트워크 재구성
-            </button>
-        </div>
-        
-        <div class="advanced-settings">
-            <h3>⚙️ 신경망 설정</h3>
-            
-            <div class="form-section">
-                <h3>🔗 Zapier Webhook URL</h3>
-                <input 
-                    type="url" 
-                    id="webhookUrl" 
-                    class="webhook-input"
-                    placeholder="https://hooks.zapier.com/hooks/catch/..."
-                >
-            </div>
-            
-            <div class="settings-grid">
-                <div class="setting-group">
-                    <h4>🧠 Neural Processing</h4>
-                    <div class="checkbox-grid">
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="smartConnections" checked>
-                            <label for="smartConnections">지능형 연결</label>
-                        </div>
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="weightCalculation" checked>
-                            <label for="weightCalculation">가중치 계산</label>
-                        </div>
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="memoryOptimization" checked>
-                            <label for="memoryOptimization">메모리 최적화</label>
-                        </div>
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="patternRecognition" checked>
-                            <label for="patternRecognition">패턴 인식</label>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="setting-group">
-                    <h4>🔧 Connection Rules</h4>
-                    <div class="checkbox-grid">
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="pruneWeakLinks" checked>
-                            <label for="pruneWeakLinks">약한 연결 제거</label>
-                        </div>
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="bidirectionalSync" checked>
-                            <label for="bidirectionalSync">양방향 동기화</label>
-                        </div>
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="temporalWeighting" checked>
-                            <label for="temporalWeighting">시간 가중치</label>
-                        </div>
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="usageTracking" checked>
-                            <label for="usageTracking">사용 패턴 추적</label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="setting-group" style="margin-top: 15px;">
-                <h4>💾 Memory Limits</h4>
-                <div class="memory-limits">
-                    <div class="memory-input">
-                        <label>Hot Memory (KB)</label>
-                        <input type="number" id="hotMemoryLimit" value="5" min="1" max="10">
-                    </div>
-                    <div class="memory-input">
-                        <label>Warm Memory (KB)</label>
-                        <input type="number" id="warmMemoryLimit" value="15" min="5" max="30">
-                    </div>
-                    <div class="memory-input">
-                        <label>Max Connections/Node</label>
-                        <input type="number" id="maxConnections" value="5" min="3" max="10">
-                    </div>
-                </div>
-            </div>
-        </div>
+        <button onclick="basicTest()">🔗 기본 테스트</button>
+        <button onclick="processTest()">🧠 처리 테스트</button>
         
         <div id="status" class="status"></div>
-
-        <div id="debugInfo" class="debug-info">
-            <h4>🔍 Debug Information</h4>
-            <div id="debugContent"></div>
-        </div>
-        
-        <div id="neuralVisualization" class="neural-visualization">
-            <h3>🔗 신경망 연결 상태</h3>
-            <div id="connectionMatrix" class="connection-matrix"></div>
-        </div>
     </div>
 
     <script>
-        // 초기화
-        document.addEventListener('DOMContentLoaded', () => {
-            loadSettings();
-            updateNeuralStatus();
-            setupEventListeners();
-            console.log('🚀 Claude 신경망 시스템 로드 완료');
-        });
-
-        function setupEventListeners() {
-            // 설정 변경 시 자동 저장
-            ['webhookUrl', 'hotMemoryLimit', 'warmMemoryLimit', 'maxConnections'].forEach(id => {
-                const element = document.getElementById(id);
-                if (element) {
-                    element.addEventListener('change', saveSettings);
-                }
-            });
-
-            // 키보드 단축키
-            document.getElementById('conversation').addEventListener('keydown', (e) => {
-                if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
-                    e.preventDefault();
-                    processNeural('smart');
-                }
-            });
-        }
-
-        // 설정 저장/로드
-        function loadSettings() {
-            const settings = {
-                webhookUrl: localStorage.getItem('neural_webhookUrl') || '',
-                hotMemoryLimit: localStorage.getItem('neural_hotMemoryLimit') || '5',
-                warmMemoryLimit: localStorage.getItem('neural_warmMemoryLimit') || '15',
-                maxConnections: localStorage.getItem('neural_maxConnections') || '5'
-            };
-            
-            Object.keys(settings).forEach(key => {
-                const element = document.getElementById(key);
-                if (element) element.value = settings[key];
-            });
-        }
-
-        function saveSettings() {
-            const settings = ['webhookUrl', 'hotMemoryLimit', 'warmMemoryLimit', 'maxConnections'];
-            settings.forEach(setting => {
-                const element = document.getElementById(setting);
-                if (element) {
-                    localStorage.setItem(`neural_${setting}`, element.value);
-                }
-            });
-        }
-
-        // 신경망 상태 업데이트
-        function updateNeuralStatus() {
-            const stats = JSON.parse(localStorage.getItem('neural_stats') || '{}');
-            document.getElementById('nodeCount').textContent = stats.nodeCount || 0;
-            document.getElementById('connectionCount').textContent = stats.connectionCount || 0;
-            document.getElementById('memoryUsage').textContent = (stats.memoryUsage || 0) + 'KB';
-            document.getElementById('lastUpdate').textContent = stats.lastUpdate || 'Never';
-        }
-
-        // 상태 메시지 표시
-        function showStatus(message, type, duration = 5000) {
+        function showStatus(message, type) {
             const status = document.getElementById('status');
             status.textContent = message;
             status.className = `status ${type}`;
             status.style.display = 'block';
-            
-            if (type === 'success' && duration > 0) {
-                setTimeout(() => {
-                    status.style.display = 'none';
-                }, duration);
-            }
+            console.log(`[${type.toUpperCase()}] ${message}`);
         }
 
-        // 디버그 정보 표시
-        function showDebugInfo(info) {
-            const debugDiv = document.getElementById('debugInfo');
-            const debugContent = document.getElementById('debugContent');
-            debugContent.innerHTML = `
-                <strong>Request Time:</strong> ${new Date().toLocaleString()}<br>
-                <strong>Webhook URL:</strong> ${info.webhookUrl ? info.webhookUrl.substring(0, 50) + '...' : 'Not set'}<br>
-                <strong>Payload Size:</strong> ${info.payloadSize || 'Unknown'} bytes<br>
-                <strong>Mode:</strong> ${info.mode || 'smart'}<br>
-                <strong>Status:</strong> ${info.status || 'Sent'}
-            `;
-            debugDiv.style.display = 'block';
-        }
-
-        // 로딩 오버레이
-        function showLoading(show = true) {
-            const overlay = document.getElementById('loadingOverlay');
-            overlay.style.display = show ? 'flex' : 'none';
-        }
-
-        // 연결 테스트 함수
-        async function testConnection() {
+        // 가장 기본적인 테스트
+        async function basicTest() {
             const webhookUrl = document.getElementById('webhookUrl').value.trim();
             
+            console.log("=== 기본 테스트 시작 ===");
+            console.log("Webhook URL:", webhookUrl);
+            
             if (!webhookUrl) {
-                showStatus('❌ Webhook URL을 먼저 입력해주세요!', 'error');
+                showStatus('Webhook URL을 입력하세요', 'error');
                 return;
             }
-
-            showStatus('🔗 연결 테스트 중...', 'processing', 0);
 
             try {
-                const testPayload = {
-                    test: true,
-                    message: "Connection test from Claude Neural Memory System",
-                    timestamp: new Date().toISOString(),
-                    action: "connection_test"
-                };
-
+                const payload = { test: "basic", time: new Date().toISOString() };
+                console.log("전송할 payload:", payload);
+                
+                showStatus('기본 테스트 전송 중...', 'success');
+                
                 const response = await fetch(webhookUrl, {
                     method: 'POST',
-                    mode: 'no-cors',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(testPayload)
-                });
-
-                showDebugInfo({
-                    webhookUrl: webhookUrl,
-                    payloadSize: JSON.stringify(testPayload).length,
-                    mode: 'test',
-                    status: 'Sent (CORS-limited response)'
-                });
-
-                showStatus('✅ 테스트 요청 전송됨! Zapier에서 "Find new records"를 클릭하여 확인하세요.', 'success');
-
-            } catch (error) {
-                showStatus(`❌ 연결 오류: ${error.message}`, 'error');
-                showDebugInfo({
-                    webhookUrl: webhookUrl,
-                    status: `Error: ${error.message}`
-                });
-            }
-        }
-
-        // 신경망 처리 메인 함수 (neuralSettings 문제 해결)
-        async function processNeural(mode) {
-            const conversation = document.getElementById('conversation').value.trim();
-            const webhookUrl = document.getElementById('webhookUrl').value.trim();
-            
-            // 유효성 검사
-            if (!conversation) {
-                showStatus('❌ 대화 내용을 입력해주세요!', 'error');
-                return;
-            }
-
-            if (!webhookUrl) {
-                showStatus('❌ Webhook URL을 설정해주세요!', 'error');
-                return;
-            }
-
-            // UI 비활성화
-            const buttons = document.querySelectorAll('.btn');
-            buttons.forEach(btn => btn.disabled = true);
-            
-            showLoading(true);
-            showStatus('🧠 신경망 처리 요청 전송 중...', 'processing', 0);
-
-            try {
-                // 🔧 neuralSettings를 문자열로 변환 (핵심 수정)
-                const neuralSettings = {
-                    smartConnections: document.getElementById('smartConnections').checked,
-                    weightCalculation: document.getElementById('weightCalculation').checked,
-                    memoryOptimization: document.getElementById('memoryOptimization').checked,
-                    patternRecognition: document.getElementById('patternRecognition').checked,
-                    pruneWeakLinks: document.getElementById('pruneWeakLinks').checked,
-                    bidirectionalSync: document.getElementById('bidirectionalSync').checked,
-                    temporalWeighting: document.getElementById('temporalWeighting').checked,
-                    usageTracking: document.getElementById('usageTracking').checked,
-                    memoryLimits: {
-                        hot: parseInt(document.getElementById('hotMemoryLimit').value),
-                        warm: parseInt(document.getElementById('warmMemoryLimit').value),
-                        maxConnections: parseInt(document.getElementById('maxConnections').value)
-                    }
-                };
-
-                // ✅ 올바른 payload 구조 (HOIST 문제 해결)
-                const payload = {
-                    conversation: conversation,  // 기본 키
-                    neuralSettingsJson: JSON.stringify(neuralSettings, null, 2),
-                    mode: mode,
-                    timestamp: new Date().toISOString(),
-                    action: 'neural_memory_update',
-                    version: '2.1'
-                };
-
-                console.log('📤 전송할 payload:', payload);
-
-                console.log('📤 수정된 전송 데이터:', {
-                    conversationLength: conversation.length,
-                    neuralSettingsSize: payload.neuralSettingsJson.length,
-                    mode: mode,
-                    version: payload.version
-                });
-
-                // CORS 우회 방법 사용
-                const response = await fetch(webhookUrl, {
-                    method: 'POST',
-                    mode: 'no-cors', // CORS 우회
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
-
-                // no-cors 모드에서는 응답 상태를 확인할 수 없으므로 성공으로 가정
-                showDebugInfo({
-                    webhookUrl: webhookUrl,
-                    payloadSize: JSON.stringify(payload).length,
-                    mode: mode,
-                    status: 'Sent successfully (neuralSettings fixed)'
-                });
-
-                // 통계 업데이트 (시뮬레이션)
-                const stats = {
-                    nodeCount: Math.floor(Math.random() * 20) + 15,
-                    connectionCount: Math.floor(Math.random() * 50) + 25,
-                    memoryUsage: (Math.random() * 3 + 4.2).toFixed(1),
-                    lastUpdate: new Date().toLocaleString('ko-KR')
-                };
                 
-                localStorage.setItem('neural_stats', JSON.stringify(stats));
-                updateNeuralStatus();
+                console.log("응답:", response);
+                showStatus('기본 테스트 완료! Zapier 확인하세요.', 'success');
                 
-                // 연결 시각화 업데이트
-                updateConnectionVisualization();
-                
-                showStatus('✅ 신경망 업데이트 요청 전송 완료!\n\n⚡ neuralSettings 문제 해결됨!\nZapier에서 "Find new records"를 클릭하여 처리 결과를 확인하세요.', 'success');
-                
-                // 성공 시 텍스트 영역 클리어
-                document.getElementById('conversation').value = '';
-
             } catch (error) {
-                showStatus(`❌ 전송 오류: ${error.message}`, 'error');
-                showDebugInfo({
-                    webhookUrl: webhookUrl,
-                    status: `Error: ${error.message}`
-                });
-                console.error('Neural processing error:', error);
-            } finally {
-                // UI 재활성화
-                buttons.forEach(btn => btn.disabled = false);
-                showLoading(false);
+                console.error("기본 테스트 오류:", error);
+                showStatus(`기본 테스트 오류: ${error.message}`, 'error');
             }
         }
 
-        // 연결 시각화 업데이트
-        function updateConnectionVisualization() {
-            const visualization = document.getElementById('neuralVisualization');
-            const matrix = document.getElementById('connectionMatrix');
+        // 처리 테스트
+        async function processTest() {
+            const webhookUrl = document.getElementById('webhookUrl').value.trim();
+            const conversation = document.getElementById('conversation').value.trim();
             
-            // 샘플 연결 데이터 (실제로는 서버에서 받아옴)
-            const connections = [
-                { node: '관제센터_설계', target: '정의일_관리', weight: 0.95, type: 'project_people' },
-                { node: '대영통운_프로젝트', target: '정부사업_협력', weight: 0.88, type: 'business_strategy' },
-                { node: 'AI_자동화', target: '시스템_최적화', weight: 0.72, type: 'tech_implementation' },
-                { node: '실용성_철학', target: '80/20_규칙', weight: 0.91, type: 'decision_pattern' },
-                { node: '신경망_메모리', target: '지능형_연결', weight: 0.86, type: 'system_architecture' }
-            ];
+            console.log("=== 처리 테스트 시작 ===");
+            console.log("Webhook URL:", webhookUrl);
+            console.log("Conversation:", conversation.substring(0, 100) + "...");
             
-            matrix.innerHTML = '';
-            
-            connections.forEach(conn => {
-                const nodeElement = document.createElement('div');
-                nodeElement.className = 'connection-node';
-                
-                const strengthClass = conn.weight >= 0.8 ? 'strength-high' : 
-                                    conn.weight >= 0.5 ? 'strength-medium' : 'strength-low';
-                
-                nodeElement.innerHTML = `
-                    <div><strong>${conn.node}</strong></div>
-                    <div style="margin: 5px 0;">↓ ${(conn.weight * 100).toFixed(0)}% 연결</div>
-                    <div>${conn.target}</div>
-                    <div class="connection-strength ${strengthClass}">
-                        ${conn.type}
-                    </div>
-                `;
-                
-                matrix.appendChild(nodeElement);
-            });
-            
-            visualization.style.display = 'block';
-        }
+            if (!webhookUrl || !conversation) {
+                showStatus('URL과 대화 내용을 모두 입력하세요', 'error');
+                return;
+            }
 
-        // PWA 지원
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js').catch(() => {
-                    console.log('Service Worker registration failed');
+            try {
+                const payload = {
+                    conversation: conversation,
+                    mode: "smart",
+                    timestamp: new Date().toISOString(),
+                    test_version: "working_test"
+                };
+                
+                console.log("전송할 payload:", payload);
+                showStatus('처리 테스트 전송 중...', 'success');
+                
+                const response = await fetch(webhookUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
                 });
-            });
+                
+                console.log("응답:", response);
+                showStatus('처리 테스트 완료! Zapier 확인하세요.', 'success');
+                
+            } catch (error) {
+                console.error("처리 테스트 오류:", error);
+                showStatus(`처리 테스트 오류: ${error.message}`, 'error');
+            }
         }
 
-        // 페이지 언로드 시 설정 저장
-        window.addEventListener('beforeunload', saveSettings);
+        // URL 저장
+        document.getElementById('webhookUrl').addEventListener('change', function() {
+            localStorage.setItem('test_webhook_url', this.value);
+            console.log("URL 저장됨:", this.value);
+        });
+
+        // 페이지 로드시 URL 복원
+        window.addEventListener('load', function() {
+            const savedUrl = localStorage.getItem('test_webhook_url');
+            if (savedUrl) {
+                document.getElementById('webhookUrl').value = savedUrl;
+                console.log("저장된 URL 복원:", savedUrl);
+            }
+        });
     </script>
 </body>
 </html>
