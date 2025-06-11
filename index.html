@@ -768,8 +768,8 @@
             const conversation = document.getElementById('conversation').value;
             const artifacts = [];
             
-            // 코드 블록 패턴
-            const codeBlockPattern = /```(\w+)?\n([\s\S]*?)```/g;
+            // 1. 코드 블록 패턴 (```로 감싸진 것들)
+            const codeBlockPattern = /```(\w+)?\s*\n([\s\S]*?)\n```/g;
             let match;
             let index = 0;
             
@@ -777,19 +777,108 @@
                 const language = match[1] || 'text';
                 const content = match[2].trim();
                 
-                if (content.length > 100) {
+                if (content.length > 50) { // 최소 크기 줄임
                     artifacts.push({
-                        title: `${language} 코드`,
-                        type: language,
+                        title: `${language} 코드 ${index + 1}`,
+                        type: language.toLowerCase(),
                         content: content,
                         id: `textcode_${index}`,
-                        extracted_method: 'text_parsing'
+                        extracted_method: 'text_code_block'
                     });
                     index++;
                 }
             }
             
+            // 2. HTML 문서 패턴
+            const htmlPattern = /<!DOCTYPE html[\s\S]*?<\/html>/gi;
+            const htmlMatches = conversation.match(htmlPattern);
+            if (htmlMatches) {
+                htmlMatches.forEach((html, i) => {
+                    artifacts.push({
+                        title: `HTML 문서 ${i + 1}`,
+                        type: 'html',
+                        content: html.trim(),
+                        id: `html_${i}`,
+                        extracted_method: 'text_html_pattern'
+                    });
+                });
+            }
+            
+            // 3. JavaScript 함수 패턴
+            const jsPattern = /function\s+\w+\s*\([^)]*\)\s*\{[\s\S]*?\n\}/g;
+            const jsMatches = conversation.match(jsPattern);
+            if (jsMatches) {
+                jsMatches.forEach((js, i) => {
+                    if (js.length > 100) {
+                        artifacts.push({
+                            title: `JavaScript 함수 ${i + 1}`,
+                            type: 'javascript',
+                            content: js.trim(),
+                            id: `jsfunction_${i}`,
+                            extracted_method: 'text_js_pattern'
+                        });
+                    }
+                });
+            }
+            
+            // 4. CSS 스타일 패턴
+            const cssPattern = /\{[^}]*(?:background|color|margin|padding|font)[^}]*\}/g;
+            const cssMatches = conversation.match(cssPattern);
+            if (cssMatches && cssMatches.length > 3) { // CSS가 여러개 있을 때만
+                const cssContent = cssMatches.join('\n');
+                if (cssContent.length > 200) {
+                    artifacts.push({
+                        title: 'CSS 스타일',
+                        type: 'css',
+                        content: cssContent,
+                        id: 'css_styles',
+                        extracted_method: 'text_css_pattern'
+                    });
+                }
+            }
+            
+            // 5. JSON 패턴
+            const jsonPattern = /\{[\s\S]*?"[^"]+"\s*:\s*[^}]+\}/g;
+            const jsonMatches = conversation.match(jsonPattern);
+            if (jsonMatches) {
+                jsonMatches.forEach((json, i) => {
+                    if (json.length > 100) {
+                        try {
+                            JSON.parse(json); // 유효한 JSON인지 확인
+                            artifacts.push({
+                                title: `JSON 데이터 ${i + 1}`,
+                                type: 'json',
+                                content: json.trim(),
+                                id: `json_${i}`,
+                                extracted_method: 'text_json_pattern'
+                            });
+                        } catch (e) {
+                            // 유효하지 않은 JSON은 무시
+                        }
+                    }
+                });
+            }
+            
+            // 6. 마크다운 테이블 패턴
+            const tablePattern = /\|[\s\S]*?\|\s*\n\|[\s\S]*?\|\s*\n(?:\|[\s\S]*?\|\s*\n)*/g;
+            const tableMatches = conversation.match(tablePattern);
+            if (tableMatches) {
+                tableMatches.forEach((table, i) => {
+                    if (table.split('\n').length > 3) { // 3줄 이상의 테이블
+                        artifacts.push({
+                            title: `마크다운 테이블 ${i + 1}`,
+                            type: 'markdown',
+                            content: table.trim(),
+                            id: `table_${i}`,
+                            extracted_method: 'text_table_pattern'
+                        });
+                    }
+                });
+            }
+            
             console.log(`📄 텍스트에서 추출: ${artifacts.length}개`);
+            console.log('추출 상세:', artifacts.map(a => `${a.title} (${a.type}, ${a.content.length}자)`));
+            
             return artifacts;
         }
 
