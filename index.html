@@ -799,15 +799,17 @@
                     }
                 };
 
-                // ✅ 문제 해결: neuralSettings를 JSON 문자열로 변환
+                // ✅ 올바른 payload 구조 (HOIST 문제 해결)
                 const payload = {
-                    conversation: conversation,
-                    neuralSettingsJson: JSON.stringify(neuralSettings, null, 2), // 🎯 이게 핵심!
+                    conversation: conversation,  // 기본 키
+                    neuralSettingsJson: JSON.stringify(neuralSettings, null, 2),
                     mode: mode,
                     timestamp: new Date().toISOString(),
                     action: 'neural_memory_update',
                     version: '2.1'
                 };
+
+                console.log('📤 전송할 payload:', payload);
 
                 console.log('📤 수정된 전송 데이터:', {
                     conversationLength: conversation.length,
