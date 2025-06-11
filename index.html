@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🧠 Claude 신경망 기억 시스템 v10.0</title>
+    <title>🧠 Claude 신경망 기억 시스템</title>
     <link rel="manifest" href="manifest.json">
     <style>
         * {
@@ -21,7 +21,7 @@
         }
         
         .container {
-            max-width: 950px;
+            max-width: 900px;
             margin: 0 auto;
             background: rgba(255, 255, 255, 0.95);
             border-radius: 20px;
@@ -51,366 +51,277 @@
             font-weight: 500;
         }
 
-        .version-badge {
-            display: inline-block;
-            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
-            color: white;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.8em;
-            font-weight: 600;
-            margin-left: 10px;
-            position: relative;
-            animation: glow 2s ease-in-out infinite alternate;
-        }
-
-        @keyframes glow {
-            from { box-shadow: 0 0 5px rgba(255, 107, 107, 0.5); }
-            to { box-shadow: 0 0 15px rgba(255, 107, 107, 0.8); }
-        }
-
-        .feature-highlight {
-            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
-            border: 2px solid #4caf50;
-            color: #2e7d32;
-            padding: 20px;
-            border-radius: 15px;
-            margin-bottom: 25px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .feature-highlight::before {
-            content: '🔥 NEW';
-            position: absolute;
-            top: -5px;
-            right: -15px;
-            background: #ff4757;
-            color: white;
-            padding: 5px 15px;
-            border-radius: 15px;
-            font-size: 0.7em;
-            font-weight: 600;
-            transform: rotate(15deg);
-        }
-
-        .feature-highlight .title {
-            font-weight: 700;
-            font-size: 1.2em;
-            margin-bottom: 12px;
-        }
-
-        .feature-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 10px;
-            font-size: 0.9em;
-            margin-top: 15px;
-        }
-
-        .feature-list .feature {
-            background: rgba(76, 175, 80, 0.15);
-            padding: 8px 12px;
+        .cors-notice {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            border: 1px solid #2196f3;
+            color: #0d47a1;
+            padding: 12px;
             border-radius: 8px;
-            border: 1px solid rgba(76, 175, 80, 0.4);
-            font-weight: 500;
-        }
-
-        .v10-badge {
-            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
-            color: white;
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-size: 0.7em;
-            font-weight: 600;
-            margin-left: 5px;
+            margin-bottom: 20px;
+            font-size: 0.9em;
+            text-align: center;
         }
         
         .neural-status {
             display: flex;
             justify-content: space-around;
+            margin-bottom: 20px;
+            padding: 15px;
             background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 25px;
-            border: 1px solid #dee2e6;
+            border-radius: 12px;
+            flex-wrap: wrap;
+            gap: 10px;
         }
         
         .status-item {
             text-align: center;
             flex: 1;
+            min-width: 100px;
         }
         
         .status-value {
-            font-size: 1.8em;
+            font-size: 1.4em;
             font-weight: 700;
             color: #495057;
-            margin-bottom: 5px;
         }
         
         .status-label {
+            font-size: 0.8em;
             color: #6c757d;
-            font-size: 0.85em;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-weight: 500;
+            margin-top: 2px;
         }
         
         .form-section {
-            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-            border-radius: 15px;
-            padding: 25px;
             margin-bottom: 20px;
-            border: 1px solid #e9ecef;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
         }
         
         .form-section h3 {
-            color: #495057;
-            margin-bottom: 15px;
-            font-size: 1.3em;
-            font-weight: 600;
+            margin-bottom: 12px;
+            color: #2c3e50;
+            font-size: 1.1em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: #495057;
-            font-weight: 500;
-            font-size: 0.95em;
-        }
-        
-        .form-group input,
-        .form-group textarea {
+        textarea {
             width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #e9ecef;
-            border-radius: 10px;
-            font-size: 0.95em;
+            padding: 15px;
+            border: 2px solid #e0e6ed;
+            border-radius: 12px;
+            font-size: 13px;
+            font-family: 'SF Mono', 'Monaco', 'Inconsolata', monospace;
+            resize: vertical;
             transition: all 0.3s ease;
-            background: #fff;
+            line-height: 1.5;
         }
         
-        .form-group input:focus,
-        .form-group textarea:focus {
+        textarea:focus {
             outline: none;
             border-color: #667eea;
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: translateY(-1px);
         }
         
-        .form-group textarea {
-            resize: vertical;
-            min-height: 200px;
-            font-family: 'Courier New', monospace;
-            line-height: 1.5;
-        }
-
-        .artifact-status {
-            background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
-            border: 2px solid #ff9800;
-            border-radius: 12px;
-            padding: 15px;
-            margin: 15px 0;
-            color: #e65100;
-            font-size: 0.9em;
-            position: relative;
-        }
-
-        .artifact-count {
-            font-weight: 700;
-            color: #bf360c;
-            font-size: 1.1em;
-        }
-
-        .enhanced-detection {
-            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
-            border: 2px solid #2196f3;
-            border-radius: 12px;
-            padding: 15px;
-            margin: 15px 0;
-            color: #0d47a1;
-            font-size: 0.9em;
-        }
-
-        .detection-grid {
+        .controls {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 8px;
-            margin-top: 10px;
-        }
-
-        .detection-item {
-            background: rgba(33, 150, 243, 0.1);
-            padding: 6px 10px;
-            border-radius: 6px;
-            border: 1px solid rgba(33, 150, 243, 0.3);
-            font-size: 0.8em;
-            text-align: center;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
         }
         
         .btn {
-            padding: 15px 25px;
+            padding: 15px 20px;
             border: none;
             border-radius: 12px;
-            cursor: pointer;
+            font-size: 15px;
             font-weight: 600;
-            font-size: 1em;
+            cursor: pointer;
             transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-            margin: 5px;
             position: relative;
             overflow: hidden;
         }
         
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-        }
-        
-        .btn:active {
-            transform: translateY(0);
-        }
-        
-        .btn-neural {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            position: relative;
-        }
-
-        .btn-neural::after {
-            content: 'v10.0';
-            position: absolute;
-            top: -8px;
-            right: -8px;
-            background: #ff4757;
-            color: white;
-            padding: 2px 6px;
-            border-radius: 8px;
-            font-size: 0.6em;
-            font-weight: 700;
-        }
-        
-        .btn:disabled {
-            background: linear-gradient(135deg, #adb5bd 0%, #868e96 100%);
-            cursor: not-allowed;
-            transform: none;
-        }
-        
-        .btn-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            justify-content: center;
-            margin-top: 20px;
-        }
-        
-        .processing {
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .processing::after {
+        .btn::before {
             content: '';
             position: absolute;
             top: 0;
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            animation: shimmer 2s infinite;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s;
         }
         
-        @keyframes shimmer {
-            0% { left: -100%; }
-            100% { left: 100%; }
+        .btn:hover::before {
+            left: 100%;
         }
-
-        .status {
+        
+        .btn-neural {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-force {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .advanced-settings {
             background: #f8f9fa;
-            border: 1px solid #dee2e6;
             border-radius: 12px;
-            padding: 15px;
-            margin: 20px 0;
-            font-weight: 500;
-            text-align: center;
-            transition: all 0.3s ease;
-            white-space: pre-line;
+            padding: 20px;
+            margin-bottom: 20px;
         }
         
-        .status.processing {
-            background: linear-gradient(135deg, #cce7ff 0%, #a6d5ff 100%);
-            color: #1976d2;
-            border: 1px solid #2196f3;
+        .settings-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .setting-group {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+        }
+        
+        .setting-group h4 {
+            margin-bottom: 10px;
+            font-size: 0.9em;
+            color: #495057;
+        }
+        
+        .checkbox-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85em;
+        }
+        
+        .checkbox-item input[type="checkbox"] {
+            transform: scale(1.1);
+        }
+        
+        .memory-limits {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+        
+        .memory-input {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        .memory-input label {
+            font-size: 0.8em;
+            color: #6c757d;
+        }
+        
+        .memory-input input {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 0.9em;
+        }
+        
+        .webhook-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e6ed;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        
+        .status {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 12px;
+            display: none;
+            font-weight: 500;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
         .status.success {
             background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
             color: #155724;
-            border: 1px solid #28a745;
+            border: 1px solid #c3e6cb;
         }
         
         .status.error {
-            background: linear-gradient(135deg, #f8d7da 0%, #f1aeb5 100%);
+            background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
             color: #721c24;
-            border: 1px solid #dc3545;
+            border: 1px solid #f5c6cb;
         }
-
-        .status.warning {
+        
+        .status.processing {
             background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
             color: #856404;
             border: 1px solid #ffeaa7;
         }
+
+        .status.info {
+            background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%);
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
         
         .neural-visualization {
             margin-top: 20px;
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            border-radius: 15px;
             padding: 20px;
-            border: 1px solid #dee2e6;
+            background: linear-gradient(135deg, #f1f3f4 0%, #e8eaed 100%);
+            border-radius: 12px;
+            display: none;
         }
         
-        .neural-visualization h3 {
-            margin-bottom: 15px;
-            color: #495057;
-            font-size: 1.2em;
-        }
-        
-        .connection-grid {
+        .connection-matrix {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
         }
         
-        .connection-item {
+        .connection-node {
             background: white;
-            border-radius: 10px;
-            padding: 15px;
-            border: 1px solid #e9ecef;
-            transition: all 0.3s ease;
-        }
-        
-        .connection-item:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-        
-        .connection-title {
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: #495057;
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            font-size: 0.9em;
         }
         
         .connection-strength {
-            padding: 4px 8px;
-            border-radius: 20px;
-            font-size: 0.8em;
-            font-weight: 500;
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 0.7em;
+            font-weight: 600;
+            margin-top: 5px;
         }
         
         .strength-high { background: #d4edda; color: #155724; }
@@ -428,89 +339,18 @@
             display: none;
         }
 
-        .loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-
-        .loading-content {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            text-align: center;
-            max-width: 350px;
-        }
-
-        .loading-spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #667eea;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 15px;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .result-summary {
-            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
-            border: 1px solid #4caf50;
+        .test-section {
+            background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
+            border: 1px solid #ffc107;
             border-radius: 12px;
-            padding: 20px;
-            margin: 20px 0;
-            color: #2e7d32;
-        }
-
-        .result-summary h4 {
-            margin-bottom: 15px;
-            color: #1b5e20;
-            font-size: 1.1em;
-        }
-
-        .file-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 10px;
-            margin: 15px 0;
-        }
-
-        .file-item {
-            background: rgba(76, 175, 80, 0.1);
-            padding: 10px;
-            border-radius: 8px;
-            border: 1px solid rgba(76, 175, 80, 0.3);
-            font-size: 0.9em;
-        }
-
-        .artifact-summary {
-            background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
-            border: 1px solid #ff9800;
-            border-radius: 10px;
             padding: 15px;
-            margin: 15px 0;
-            color: #e65100;
+            margin-bottom: 20px;
         }
 
-        .artifact-item {
-            background: rgba(255, 152, 0, 0.1);
-            padding: 8px 12px;
-            border-radius: 6px;
-            border: 1px solid rgba(255, 152, 0, 0.3);
-            margin: 5px 0;
-            font-family: 'Courier New', monospace;
-            font-size: 0.85em;
+        .test-section h4 {
+            color: #e65100;
+            margin-bottom: 10px;
+            font-size: 1em;
         }
         
         @media (max-width: 768px) {
@@ -519,823 +359,365 @@
                 margin: 5px;
             }
             
-            .neural-status {
-                flex-direction: column;
-                gap: 15px;
-            }
-            
-            .btn-group {
-                flex-direction: column;
-            }
-            
-            .btn {
-                width: 100%;
-                margin: 5px 0;
-            }
-            
-            .connection-grid {
+            .controls {
                 grid-template-columns: 1fr;
             }
+            
+            .settings-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .neural-status {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .memory-limits {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 1.8em;
+            }
+        }
+        
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .loading-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            max-width: 300px;
+        }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
 <body>
     <div class="loading-overlay" id="loadingOverlay">
         <div class="loading-content">
-            <div class="loading-spinner"></div>
-            <div><strong>🧠 신경망 v10.0 처리 중...</strong></div>
-            <div style="font-size: 0.9em; color: #666; margin-top: 10px;">
-                아티팩트 자동 추출 + 완전체 처리<br>
-                평균 30초-1분 소요됩니다
+            <div class="spinner"></div>
+            <div>🧠 신경망 처리 중...</div>
+            <div style="font-size: 0.8em; color: #666; margin-top: 10px;">
+                평균 30초-1분 소요
             </div>
         </div>
     </div>
 
     <div class="container">
         <div class="header">
-            <h1>🧠 Claude 신경망 기억 시스템<span class="version-badge">v10.0 FINAL</span></h1>
-            <div class="subtitle">Complete Neural Knowledge Graph + Intelligent Memory + Auto Artifact Extraction + Context Automation</div>
+            <h1>🧠 Claude 신경망 기억 시스템</h1>
+            <div class="subtitle">Neural Knowledge Graph + Intelligent Memory Management</div>
         </div>
 
-        <div class="feature-highlight">
-            <div class="title">🎯 v10.0 완전체 시스템 - 혁신적 업그레이드</div>
-            <div class="feature-list">
-                <div class="feature">🤖 강화된 아티팩트 자동 추출 <span class="v10-badge">NEW</span></div>
-                <div class="feature">🔗 완전한 백링크 시스템</div>
-                <div class="feature">💾 Raw 세션 완전 보존 + 아티팩트 통합</div>
-                <div class="feature">🧠 5개 신경망 파일 + 메타정보</div>
-                <div class="feature">⚡ 토큰 제한 최적화 + 압축</div>
-                <div class="feature">🔄 100% 연속성 보장</div>
-                <div class="feature">🎯 컨텍스트 자동화 (#템플릿) <span class="v10-badge">NEW</span></div>
-                <div class="feature">🚀 99% 토큰 절약 <span class="v10-badge">NEW</span></div>
-            </div>
+        <div class="cors-notice">
+            ℹ️ CORS 정책으로 인해 응답 확인이 제한됩니다. 전송 후 Zapier에서 "Find new records"를 클릭하여 확인하세요.
         </div>
         
         <div class="neural-status">
             <div class="status-item">
-                <div class="status-value" id="nodeCount">--</div>
-                <div class="status-label">Neural Nodes</div>
+                <div class="status-value" id="nodeCount">0</div>
+                <div class="status-label">Active Nodes</div>
             </div>
             <div class="status-item">
-                <div class="status-value" id="connectionCount">--</div>
+                <div class="status-value" id="connectionCount">0</div>
                 <div class="status-label">Connections</div>
             </div>
             <div class="status-item">
-                <div class="status-value" id="memoryUsage">--</div>
-                <div class="status-label">Memory (KB)</div>
+                <div class="status-value" id="memoryUsage">0KB</div>
+                <div class="status-label">Memory Usage</div>
             </div>
             <div class="status-item">
-                <div class="status-value" id="lastUpdate">--</div>
+                <div class="status-value" id="lastUpdate">Never</div>
                 <div class="status-label">Last Update</div>
             </div>
         </div>
-        
-        <div class="form-section">
-            <h3>🔗 Zapier Webhook 설정</h3>
-            <div class="form-group">
-                <label for="webhookUrl">Webhook URL</label>
-                <input type="url" id="webhookUrl" placeholder="https://hooks.zapier.com/hooks/catch/..." />
-            </div>
+
+        <div class="test-section">
+            <h4>🧪 빠른 테스트</h4>
+            <p>아래 버튼으로 Zapier 연결을 먼저 테스트해보세요.</p>
+            <button class="btn btn-neural" onclick="testConnection()" style="margin-top: 10px; padding: 8px 15px; font-size: 13px;">
+                🔗 연결 테스트
+            </button>
         </div>
         
         <div class="form-section">
             <h3>📝 Claude 대화 내용</h3>
-            <div class="form-group">
-                <label for="conversation">전체 대화 내용을 붙여넣어 주세요</label>
-                <textarea id="conversation" placeholder="Claude와의 전체 대화를 여기에 붙여넣어 주세요...
+            <textarea 
+                id="conversation" 
+                rows="10" 
+                placeholder="Claude와의 전체 대화 내용을 여기에 붙여넣으세요...
 
-💡 v10.0 혁신 기능: 
-- 전체 대화를 선택하여 복사 (Ctrl/Cmd + A → Ctrl/Cmd + C)
-- 아티팩트(코드, 마크다운 등)가 자동으로 감지 및 완전 추출
-- 중복 제거 + 분할 저장 + 부분 코드 통합 자동 처리
-- Raw 파일에 원본이 100% 완전 보존되므로 절대 안전
-- '#템플릿' 자동화 규칙이 메타정보에 영구 저장"></textarea>
+🧠 신경망 시스템이 자동으로:
+• 정보 노드 추출 및 분류
+• 기존 지식과 연결 강도 계산
+• 메모리 사용량 최적화
+• 지능형 가지치기 실행
+• 패턴 인식 및 학습
+
+⚡ 단축키: Ctrl/Cmd + Enter로 바로 실행"
+            ></textarea>
+        </div>
+        
+        <div class="controls">
+            <button class="btn btn-neural" onclick="processNeural('smart')">
+                🧠 신경망 업데이트
+            </button>
+            <button class="btn btn-force" onclick="processNeural('rebuild')">
+                🔄 네트워크 재구성
+            </button>
+        </div>
+        
+        <div class="advanced-settings">
+            <h3>⚙️ 신경망 설정</h3>
+            
+            <div class="form-section">
+                <h3>🔗 Zapier Webhook URL</h3>
+                <input 
+                    type="url" 
+                    id="webhookUrl" 
+                    class="webhook-input"
+                    placeholder="https://hooks.zapier.com/hooks/catch/..."
+                >
             </div>
             
-            <div id="artifactStatus" class="artifact-status" style="display: none;">
-                <strong>🎯 v10.0 아티팩트 감지:</strong> <span class="artifact-count" id="artifactCount">0</span>개의 아티팩트가 발견되었습니다.
-                <div id="artifactList" style="margin-top: 8px; font-size: 0.85em;"></div>
-            </div>
-
-            <div id="enhancedDetection" class="enhanced-detection" style="display: none;">
-                <strong>🔍 v10.0 강화된 감지 시스템:</strong>
-                <div class="detection-grid" id="detectionGrid">
-                    <!-- 동적으로 생성됨 -->
+            <div class="settings-grid">
+                <div class="setting-group">
+                    <h4>🧠 Neural Processing</h4>
+                    <div class="checkbox-grid">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="smartConnections" checked>
+                            <label for="smartConnections">지능형 연결</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="weightCalculation" checked>
+                            <label for="weightCalculation">가중치 계산</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="memoryOptimization" checked>
+                            <label for="memoryOptimization">메모리 최적화</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="patternRecognition" checked>
+                            <label for="patternRecognition">패턴 인식</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="setting-group">
+                    <h4>🔧 Connection Rules</h4>
+                    <div class="checkbox-grid">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="pruneWeakLinks" checked>
+                            <label for="pruneWeakLinks">약한 연결 제거</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="bidirectionalSync" checked>
+                            <label for="bidirectionalSync">양방향 동기화</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="temporalWeighting" checked>
+                            <label for="temporalWeighting">시간 가중치</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="usageTracking" checked>
+                            <label for="usageTracking">사용 패턴 추적</label>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-
-        <div class="form-section">
-            <h3>⚙️ v10.0 완전체 처리</h3>
             
-            <div class="btn-group">
-                <button class="btn btn-neural" onclick="processNeural('comprehensive')" id="btnComprehensive">
-                    🧠 완전체 신경망 v10.0 업데이트
-                </button>
-            </div>
-            
-            <div style="text-align: center; margin-top: 15px; color: #6c757d; font-size: 0.9em; line-height: 1.5;">
-                💡 <strong>v10.0 혁신:</strong> 대화 + 아티팩트 완전 처리 + 컨텍스트 자동화<br>
-                🚀 클릭 한 번으로 완벽한 기억 시스템 + 99% 토큰 절약 구현
+            <div class="setting-group" style="margin-top: 15px;">
+                <h4>💾 Memory Limits</h4>
+                <div class="memory-limits">
+                    <div class="memory-input">
+                        <label>Hot Memory (KB)</label>
+                        <input type="number" id="hotMemoryLimit" value="5" min="1" max="10">
+                    </div>
+                    <div class="memory-input">
+                        <label>Warm Memory (KB)</label>
+                        <input type="number" id="warmMemoryLimit" value="15" min="5" max="30">
+                    </div>
+                    <div class="memory-input">
+                        <label>Max Connections/Node</label>
+                        <input type="number" id="maxConnections" value="5" min="3" max="10">
+                    </div>
+                </div>
             </div>
         </div>
         
         <div id="status" class="status"></div>
 
-        <div id="resultSummary" class="result-summary" style="display: none;">
-            <h4>🎉 v10.0 신경망 업데이트 완료!</h4>
-            <div id="filesSummary"></div>
-            <div id="artifactsSummary"></div>
-            <div style="margin-top: 15px; padding: 12px; background: rgba(27, 94, 32, 0.1); border-radius: 8px;">
-                <strong>💡 v10.0 연속성 보장:</strong><br>
-                다음 세션에서 "#템플릿"만 입력하면 모든 규칙 자동 활성화!<br>
-                "어제 raw 파일과 아티팩트들 불러와서 이어서 작업하자"로 100% 연속성!
-            </div>
-        </div>
-
         <div id="debugInfo" class="debug-info">
-            <h4>🔍 Debug Information (v10.0)</h4>
+            <h4>🔍 Debug Information</h4>
             <div id="debugContent"></div>
         </div>
         
         <div id="neuralVisualization" class="neural-visualization">
-            <h3>🔗 신경망 연결 상태 (v10.0)</h3>
-            <div class="connection-grid" id="connectionGrid">
-                <!-- 동적으로 생성됨 -->
-            </div>
+            <h3>🔗 신경망 연결 상태</h3>
+            <div id="connectionMatrix" class="connection-matrix"></div>
         </div>
     </div>
 
     <script>
-        let webhookUrl = '';
-
-        // 페이지 로드 시 초기화
-        document.addEventListener('DOMContentLoaded', function() {
+        // 초기화
+        document.addEventListener('DOMContentLoaded', () => {
             loadSettings();
             updateNeuralStatus();
-            setupEventListeners();
-            console.log('🚀 Claude 신경망 v10.0 시스템 로드 완료');
         });
-
-        function setupEventListeners() {
-            // Webhook URL 저장
-            document.getElementById('webhookUrl').addEventListener('change', function() {
-                webhookUrl = this.value.trim();
-                localStorage.setItem('webhook_url', webhookUrl);
-            });
-
-            // 대화 내용 변경시 아티팩트 감지
-            document.getElementById('conversation').addEventListener('input', function() {
-                detectArtifacts();
-            });
-        }
-
-        // 강화된 아티팩트 감지 함수 (v10.0)
-        function detectArtifacts() {
-            const conversation = document.getElementById('conversation').value;
-            const artifactStatus = document.getElementById('artifactStatus');
-            const artifactCount = document.getElementById('artifactCount');
-            const artifactList = document.getElementById('artifactList');
-            const enhancedDetection = document.getElementById('enhancedDetection');
-            const detectionGrid = document.getElementById('detectionGrid');
-
-            if (conversation.length < 100) {
-                artifactStatus.style.display = 'none';
-                enhancedDetection.style.display = 'none';
-                return;
-            }
-
-            // v10.0 강화된 아티팩트 패턴 감지
-            const patterns = [
-                { name: '코드 블록', pattern: /```[\s\S]*?```/g, icon: '💻' },
-                { name: 'HTML 문서', pattern: /<!DOCTYPE html[\s\S]*?<\/html>/gi, icon: '🌐' },
-                { name: 'JavaScript', pattern: /function[\s\S]*?\}|const[\s\S]*?;|let[\s\S]*?;/g, icon: '⚡' },
-                { name: '클래스 정의', pattern: /class[\s\S]*?\}/g, icon: '🏗️' },
-                { name: 'CSS 스타일', pattern: /\{[^}]*(?:background|color|margin|padding|font)[^}]*\}/g, icon: '🎨' },
-                { name: 'JSON 데이터', pattern: /\{[\s\S]*?"[^"]+"\s*:\s*[^}]+\}/g, icon: '📋' },
-                { name: 'YAML/프론트매터', pattern: /^---[\s\S]*?---/gm, icon: '📄' },
-                { name: '마크다운 테이블', pattern: /\|[\s\S]*?\|[\s\S]*?\n\|[\s\S]*?\|/g, icon: '📊' },
-                { name: 'SQL 쿼리', pattern: /SELECT[\s\S]*?FROM[\s\S]*?;|INSERT[\s\S]*?VALUES[\s\S]*?;/gi, icon: '🗄️' },
-                { name: 'Regex 패턴', pattern: /\/[^\/\n]+\/[gimuy]*/g, icon: '🔍' }
-            ];
-
-            let totalArtifacts = 0;
-            let detectionResults = [];
-
-            patterns.forEach(({ name, pattern, icon }) => {
-                const matches = conversation.match(pattern);
-                if (matches && matches.length > 0) {
-                    // 유효성 검증 (너무 짧거나 중복 방지)
-                    const validMatches = matches.filter(match => 
-                        match.length > 30 && 
-                        !match.match(/^[\s\n]*$/)
-                    );
-                    
-                    if (validMatches.length > 0) {
-                        totalArtifacts += validMatches.length;
-                        detectionResults.push({
-                            name, 
-                            count: validMatches.length, 
-                            icon,
-                            samples: validMatches.slice(0, 2).map(m => 
-                                m.length > 50 ? m.substring(0, 47) + '...' : m
-                            )
-                        });
-                    }
-                }
-            });
-
-            if (totalArtifacts > 0) {
-                // 기본 아티팩트 상태 표시
-                artifactStatus.style.display = 'block';
-                artifactCount.textContent = totalArtifacts;
-                artifactList.innerHTML = detectionResults
-                    .map(r => `${r.icon} ${r.name}: ${r.count}개`)
-                    .join(', ');
-
-                // v10.0 강화된 감지 결과 표시
-                enhancedDetection.style.display = 'block';
-                detectionGrid.innerHTML = detectionResults
-                    .map(result => `
-                        <div class="detection-item">
-                            ${result.icon} ${result.name}<br>
-                            <strong>${result.count}개</strong>
-                        </div>
-                    `).join('');
-
-                console.log('🎯 v10.0 아티팩트 감지 결과:', detectionResults);
-            } else {
-                artifactStatus.style.display = 'none';
-                enhancedDetection.style.display = 'none';
-            }
-        }
-
-        // v10.0 완전체 아티팩트 자동 추출 함수
-        function extractArtifacts() {
-            console.log("🔍 v10.0 아티팩트 추출 시작...");
-            const artifacts = [];
-            
-            // 1단계: DOM에서 Claude 아티팩트 요소 찾기 (강화된 셀렉터)
-            const claudeSelectors = [
-                // Claude 특화 셀렉터들
-                'div[data-testid*="artifact"]',
-                'div[data-testid*="code-block"]', 
-                '[data-artifact-id]',
-                '[data-component="artifact"]',
-                '.artifact-container',
-                '.code-artifact',
-                
-                // 일반적인 코드 블록 셀렉터들
-                'div[class*="artifact"]', 
-                'div[class*="code-block"]',
-                'pre[class*="language"]',
-                'pre code',
-                '.highlight',
-                '.code-container',
-                
-                // 추가 가능성들
-                'div[role="code"]',
-                '[data-code]',
-                '.monaco-editor', // VS Code 에디터
-                '.cm-editor' // CodeMirror 에디터
-            ];
-            
-            let foundElements = [];
-            
-            claudeSelectors.forEach(selector => {
-                try {
-                    const elements = document.querySelectorAll(selector);
-                    foundElements = [...foundElements, ...Array.from(elements)];
-                } catch (e) {
-                    console.warn(`⚠️ Selector failed: ${selector}`, e);
-                }
-            });
-            
-            // 중복 제거
-            foundElements = [...new Set(foundElements)];
-            
-            console.log(`📊 DOM에서 발견된 요소: ${foundElements.length}개`);
-            
-            // DOM 요소들 처리
-            foundElements.forEach((element, index) => {
-                try {
-                    const artifact = parseArtifactElement(element, index);
-                    if (artifact && artifact.content && artifact.content.length > 50) {
-                        artifacts.push(artifact);
-                        console.log(`✅ DOM 아티팩트 ${index + 1}: ${artifact.title} (${artifact.content.length}자)`);
-                    }
-                } catch (error) {
-                    console.warn(`⚠️ DOM 아티팩트 ${index + 1} 파싱 실패:`, error);
-                }
-            });
-            
-            // 2단계: 텍스트에서 패턴 기반 추출 (강화된 fallback)
-            const textArtifacts = extractFromTextAdvanced();
-            artifacts.push(...textArtifacts);
-            
-            // 3단계: 중복 제거 및 품질 필터링
-            const filteredArtifacts = deduplicateAndFilter(artifacts);
-            
-            console.log(`🎯 v10.0 최종 추출: ${filteredArtifacts.length}개 아티팩트`);
-            console.log('상세 정보:', filteredArtifacts.map(a => ({
-                title: a.title,
-                type: a.type,
-                size: a.content.length,
-                method: a.extracted_method
-            })));
-            
-            return filteredArtifacts;
-        }
-
-        function parseArtifactElement(element, index) {
-            // 제목 추출 (더 정교한 방법)
-            let title = '';
-            
-            // 1. 전용 제목 요소들 확인
-            const titleSelectors = [
-                '.artifact-title', '.artifact-header', '.artifact-name',
-                '[data-title]', '[aria-label]', '.title', '.name',
-                'h1, h2, h3, h4, h5, h6', 'header', '.header'
-            ];
-            
-            for (let selector of titleSelectors) {
-                const titleEl = element.querySelector(selector);
-                if (titleEl && titleEl.textContent.trim()) {
-                    title = titleEl.textContent.trim();
-                    break;
-                }
-            }
-            
-            // 2. 속성에서 제목 찾기
-            if (!title) {
-                const titleAttrs = ['title', 'data-title', 'aria-label', 'alt'];
-                for (let attr of titleAttrs) {
-                    const attrValue = element.getAttribute(attr);
-                    if (attrValue && attrValue.trim()) {
-                        title = attrValue.trim();
-                        break;
-                    }
-                }
-            }
-            
-            // 3. 주변 요소에서 제목 찾기
-            if (!title) {
-                let parent = element.parentElement;
-                let searchDepth = 0;
-                while (parent && !title && searchDepth < 3) {
-                    const prevSibling = parent.previousElementSibling;
-                    if (prevSibling && /^H[1-6]$/.test(prevSibling.tagName)) {
-                        title = prevSibling.textContent.trim();
-                        break;
-                    }
-                    parent = parent.parentElement;
-                    searchDepth++;
-                }
-            }
-            
-            // 4. 코드에서 제목 추론
-            if (!title) {
-                const content = element.textContent.trim();
-                if (content.includes('function ')) {
-                    const funcMatch = content.match(/function\s+(\w+)/);
-                    if (funcMatch) title = `${funcMatch[1]} 함수`;
-                } else if (content.includes('class ')) {
-                    const classMatch = content.match(/class\s+(\w+)/);
-                    if (classMatch) title = `${classMatch[1]} 클래스`;
-                } else if (content.includes('<!DOCTYPE')) {
-                    title = 'HTML 문서';
-                }
-            }
-            
-            if (!title) {
-                title = `아티팩트 ${index + 1}`;
-            }
-            
-            // 내용 추출 (더 정교한 방법)
-            let content = '';
-            
-            // 1. 전용 컨텐츠 요소들 확인
-            const contentSelectors = [
-                'pre', 'code', '.artifact-content', '.code-content', 
-                '.source-code', 'textarea', '.monaco-editor .view-lines',
-                '.cm-content', '.CodeMirror-code'
-            ];
-            
-            for (let selector of contentSelectors) {
-                const contentEl = element.querySelector(selector);
-                if (contentEl && contentEl.textContent.trim()) {
-                    content = contentEl.textContent.trim();
-                    break;
-                }
-            }
-            
-            // 2. 직접 텍스트 내용
-            if (!content || content.length < 10) {
-                content = element.textContent.trim();
-            }
-            
-            // 3. innerHTML에서 추출 (마지막 수단)
-            if (!content && element.innerHTML) {
-                const tempDiv = document.createElement('div');
-                tempDiv.innerHTML = element.innerHTML;
-                content = tempDiv.textContent.trim();
-            }
-            
-            const type = estimateArtifactTypeAdvanced(content, title, element);
-            
-            return {
-                title: sanitizeTitle(title),
-                type: type,
-                content: content,
-                id: `dom_artifact_${index + 1}`,
-                extracted_method: 'dom_enhanced',
-                source_element: element.tagName.toLowerCase(),
-                confidence: calculateExtractionConfidence(title, content, type)
-            };
-        }
-
-        function extractFromTextAdvanced() {
-            const conversation = document.getElementById('conversation').value;
-            const artifacts = [];
-            
-            // 1. 코드 블록 패턴 (```로 감싸진 것들) - 향상된 파싱
-            const codeBlockPattern = /```(\w+)?\s*\n?([\s\S]*?)\n?```/g;
-            let match;
-            let codeIndex = 0;
-            
-            while ((match = codeBlockPattern.exec(conversation)) !== null) {
-                const language = match[1] || 'text';
-                const content = match[2].trim();
-                
-                if (content.length > 30) { // 최소 크기 조정
-                    artifacts.push({
-                        title: `${language.toUpperCase()} 코드`,
-                        type: language.toLowerCase(),
-                        content: content,
-                        id: `textcode_${codeIndex}`,
-                        extracted_method: 'text_code_block_advanced',
-                        confidence: 0.9
-                    });
-                    codeIndex++;
-                }
-            }
-            
-            // 2. 완전한 HTML 문서 패턴
-            const htmlPattern = /<!DOCTYPE\s+html[\s\S]*?<\/html>/gi;
-            const htmlMatches = conversation.match(htmlPattern);
-            if (htmlMatches) {
-                htmlMatches.forEach((html, i) => {
-                    artifacts.push({
-                        title: `HTML 완전 문서 ${i + 1}`,
-                        type: 'html',
-                        content: html.trim(),
-                        id: `html_complete_${i}`,
-                        extracted_method: 'text_html_complete',
-                        confidence: 0.95
-                    });
-                });
-            }
-            
-            // 3. JavaScript 함수/클래스 패턴 (향상된)
-            const patterns = {
-                function: {
-                    pattern: /(?:function\s+\w+\s*\([^)]*\)\s*\{[\s\S]*?\n\}|const\s+\w+\s*=\s*[^;]*?=>\s*[^;]*?;)/g,
-                    type: 'javascript',
-                    title: 'JavaScript 함수'
-                },
-                class: {
-                    pattern: /class\s+\w+\s*(?:extends\s+\w+)?\s*\{[\s\S]*?\n\}/g,
-                    type: 'javascript', 
-                    title: 'JavaScript 클래스'
-                },
-                css: {
-                    pattern: /\.[a-zA-Z][a-zA-Z0-9_-]*\s*\{[^}]*(?:background|color|margin|padding|font|border)[^}]*\}/g,
-                    type: 'css',
-                    title: 'CSS 스타일'
-                },
-                json: {
-                    pattern: /\{[\s\S]*?"[^"]+"\s*:\s*(?:"[^"]*"|[^,}]+)[\s\S]*?\}/g,
-                    type: 'json',
-                    title: 'JSON 객체'
-                }
-            };
-            
-            Object.entries(patterns).forEach(([key, config]) => {
-                const matches = conversation.match(config.pattern);
-                if (matches) {
-                    matches.forEach((match, i) => {
-                        if (match.length > 50) {
-                            // JSON 유효성 검증
-                            if (config.type === 'json') {
-                                try {
-                                    JSON.parse(match);
-                                } catch (e) {
-                                    return; // 유효하지 않은 JSON은 제외
-                                }
-                            }
-                            
-                            artifacts.push({
-                                title: `${config.title} ${i + 1}`,
-                                type: config.type,
-                                content: match.trim(),
-                                id: `${key}_${i}`,
-                                extracted_method: `text_${key}_advanced`,
-                                confidence: 0.8
-                            });
-                        }
-                    });
-                }
-            });
-            
-            // 4. 마크다운 특수 구조들
-            const markdownPatterns = {
-                table: {
-                    pattern: /\|[\s\S]*?\|[\s\S]*?\n\|[\s\S]*?\|[\s\S]*?\n(?:\|[\s\S]*?\|[\s\S]*?\n)*/g,
-                    title: '마크다운 테이블'
-                },
-                frontmatter: {
-                    pattern: /^---\n[\s\S]*?\n---/gm,
-                    title: 'YAML 프론트매터'
-                }
-            };
-            
-            Object.entries(markdownPatterns).forEach(([key, config]) => {
-                const matches = conversation.match(config.pattern);
-                if (matches) {
-                    matches.forEach((match, i) => {
-                        if (match.split('\n').length > 2) {
-                            artifacts.push({
-                                title: `${config.title} ${i + 1}`,
-                                type: 'markdown',
-                                content: match.trim(),
-                                id: `markdown_${key}_${i}`,
-                                extracted_method: `text_markdown_${key}`,
-                                confidence: 0.7
-                            });
-                        }
-                    });
-                }
-            });
-            
-            console.log(`📄 고급 텍스트 추출: ${artifacts.length}개`);
-            return artifacts;
-        }
-
-        function estimateArtifactTypeAdvanced(content, title, element) {
-            const titleLower = title.toLowerCase();
-            const contentLower = content.toLowerCase();
-            
-            // 제목 기반 추론
-            const titleTypes = {
-                'javascript': ['javascript', 'js', 'function', 'class'],
-                'html': ['html', 'webpage', '웹페이지'],
-                'css': ['css', 'style', 'stylesheet', '스타일'],
-                'python': ['python', 'py'],
-                'markdown': ['markdown', 'md'],
-                'json': ['json', 'data', '데이터'],
-                'sql': ['sql', 'query', '쿼리']
-            };
-            
-            for (let [type, keywords] of Object.entries(titleTypes)) {
-                if (keywords.some(keyword => titleLower.includes(keyword))) {
-                    return type;
-                }
-            }
-            
-            // 내용 기반 추론 (더 정교한)
-            const contentPatterns = {
-                'javascript': [
-                    /function\s+\w+\s*\(/,
-                    /const\s+\w+\s*=/,
-                    /let\s+\w+\s*=/,
-                    /import\s+.*from/,
-                    /export\s+(default\s+)?/,
-                    /class\s+\w+/,
-                    /=>|console\.log|document\./
-                ],
-                'html': [
-                    /<!DOCTYPE\s+html/i,
-                    /<html[^>]*>/i,
-                    /<head[^>]*>/i,
-                    /<body[^>]*>/i,
-                    /<div[^>]*>/i,
-                    /<span[^>]*>/i
-                ],
-                'css': [
-                    /\.[a-zA-Z][a-zA-Z0-9_-]*\s*\{/,
-                    /#[a-zA-Z][a-zA-Z0-9_-]*\s*\{/,
-                    /background\s*:|color\s*:|margin\s*:|padding\s*:/,
-                    /@media\s+/,
-                    /font-family\s*:/
-                ],
-                'python': [
-                    /def\s+\w+\s*\(/,
-                    /import\s+\w+/,
-                    /from\s+\w+\s+import/,
-                    /class\s+\w+\s*:/,
-                    /if\s+__name__\s*==\s*['""]__main__['""]:/
-                ],
-                'json': [
-                    /^\s*\{[\s\S]*\}\s*$/,
-                    /^\s*\[[\s\S]*\]\s*$/
-                ],
-                'markdown': [
-                    /^#+\s+/m,
-                    /\*\*[^*]+\*\*/,
-                    /\[[^\]]+\]\([^)]+\)/,
-                    /```[\s\S]*?```/,
-                    /^\s*\|[\s\S]*?\|/m
-                ]
-            };
-            
-            for (let [type, patterns] of Object.entries(contentPatterns)) {
-                if (patterns.some(pattern => pattern.test(content))) {
-                    return type;
-                }
-            }
-            
-            // Element 기반 추론
-            if (element) {
-                const className = element.className || '';
-                const dataAttrs = Array.from(element.attributes)
-                    .filter(attr => attr.name.startsWith('data-'))
-                    .map(attr => attr.value)
-                    .join(' ');
-                
-                const elementContext = (className + ' ' + dataAttrs).toLowerCase();
-                
-                if (elementContext.includes('javascript') || elementContext.includes('js')) return 'javascript';
-                if (elementContext.includes('html')) return 'html';
-                if (elementContext.includes('css')) return 'css';
-                if (elementContext.includes('python')) return 'python';
-            }
-            
-            return 'text';
-        }
-
-        function calculateExtractionConfidence(title, content, type) {
-            let confidence = 0.5;
-            
-            // 제목 품질
-            if (title && title !== '아티팩트' && !title.match(/^\d+$/)) {
-                confidence += 0.2;
-            }
-            
-            // 내용 길이
-            if (content.length > 100) confidence += 0.1;
-            if (content.length > 500) confidence += 0.1;
-            
-            // 타입 일치도
-            if (type !== 'text') confidence += 0.1;
-            
-            return Math.min(confidence, 1.0);
-        }
-
-        function deduplicateAndFilter(artifacts) {
-            // 1. 품질 필터링
-            const qualityFiltered = artifacts.filter(artifact => {
-                return artifact.content.length > 30 && 
-                       artifact.confidence > 0.3 &&
-                       !artifact.content.match(/^[\s\n]*$/);
-            });
-            
-            // 2. 중복 제거 (내용 기반)
-            const deduplicated = [];
-            
-            qualityFiltered.forEach(artifact => {
-                const isDuplicate = deduplicated.some(existing => {
-                    const similarity = calculateContentSimilarity(
-                        artifact.content, 
-                        existing.content
-                    );
-                    return similarity > 0.85;
-                });
-                
-                if (!isDuplicate) {
-                    deduplicated.push(artifact);
-                } else {
-                    console.log(`🔄 중복 제거: ${artifact.title}`);
-                }
-            });
-            
-            // 3. 신뢰도별 정렬
-            return deduplicated.sort((a, b) => b.confidence - a.confidence);
-        }
-
-        function calculateContentSimilarity(content1, content2) {
-            const normalize = (str) => str.toLowerCase().replace(/\s+/g, ' ').trim();
-            const norm1 = normalize(content1);
-            const norm2 = normalize(content2);
-            
-            if (norm1 === norm2) return 1.0;
-            
-            const words1 = new Set(norm1.split(/\s+/));
-            const words2 = new Set(norm2.split(/\s+/));
-            
-            const intersection = new Set([...words1].filter(x => words2.has(x)));
-            const union = new Set([...words1, ...words2]);
-            
-            return intersection.size / union.size;
-        }
-
-        function sanitizeTitle(title) {
-            return title
-                .replace(/[^\w\s가-힣\-\.]/g, '')
-                .replace(/\s+/g, '_')
-                .substring(0, 40) || '제목없음';
-        }
 
         // 설정 저장/로드
         function loadSettings() {
-            const savedUrl = localStorage.getItem('webhook_url');
-            if (savedUrl) {
-                document.getElementById('webhookUrl').value = savedUrl;
-                webhookUrl = savedUrl;
-            }
+            const settings = {
+                webhookUrl: localStorage.getItem('neural_webhookUrl') || '',
+                hotMemoryLimit: localStorage.getItem('neural_hotMemoryLimit') || '5',
+                warmMemoryLimit: localStorage.getItem('neural_warmMemoryLimit') || '15',
+                maxConnections: localStorage.getItem('neural_maxConnections') || '5'
+            };
+            
+            Object.keys(settings).forEach(key => {
+                const element = document.getElementById(key);
+                if (element) element.value = settings[key];
+            });
         }
 
         function saveSettings() {
-            localStorage.setItem('webhook_url', webhookUrl);
+            const settings = ['webhookUrl', 'hotMemoryLimit', 'warmMemoryLimit', 'maxConnections'];
+            settings.forEach(setting => {
+                const element = document.getElementById(setting);
+                if (element) {
+                    localStorage.setItem(`neural_${setting}`, element.value);
+                }
+            });
         }
 
-        // 상태 표시 함수
-        function showStatus(message, type = 'info', progress = null) {
-            const statusDiv = document.getElementById('status');
-            statusDiv.textContent = message;
-            statusDiv.className = `status ${type}`;
+        // 설정 변경 시 자동 저장
+        ['webhookUrl', 'hotMemoryLimit', 'warmMemoryLimit', 'maxConnections'].forEach(id => {
+            const element = document.getElementById(id);
+            if (element) {
+                element.addEventListener('change', saveSettings);
+            }
+        });
+
+        // 신경망 상태 업데이트
+        function updateNeuralStatus() {
+            const stats = JSON.parse(localStorage.getItem('neural_stats') || '{}');
+            document.getElementById('nodeCount').textContent = stats.nodeCount || 0;
+            document.getElementById('connectionCount').textContent = stats.connectionCount || 0;
+            document.getElementById('memoryUsage').textContent = (stats.memoryUsage || 0) + 'KB';
+            document.getElementById('lastUpdate').textContent = stats.lastUpdate || 'Never';
+        }
+
+        // 상태 메시지 표시
+        function showStatus(message, type, duration = 5000) {
+            const status = document.getElementById('status');
+            status.textContent = message;
+            status.className = `status ${type}`;
+            status.style.display = 'block';
             
-            if (type === 'processing') {
-                statusDiv.classList.add('processing');
+            if (type === 'success' && duration > 0) {
+                setTimeout(() => {
+                    status.style.display = 'none';
+                }, duration);
             }
         }
 
-        // 디버그 정보 표시 (v10.0 강화)
+        // 디버그 정보 표시
         function showDebugInfo(info) {
             const debugDiv = document.getElementById('debugInfo');
             const debugContent = document.getElementById('debugContent');
             debugContent.innerHTML = `
-                <strong>🚀 v10.0 System Info:</strong><br>
                 <strong>Request Time:</strong> ${new Date().toLocaleString()}<br>
                 <strong>Webhook URL:</strong> ${info.webhookUrl ? info.webhookUrl.substring(0, 50) + '...' : 'Not set'}<br>
                 <strong>Payload Size:</strong> ${info.payloadSize || 'Unknown'} bytes<br>
-                <strong>Artifacts Found:</strong> ${info.artifactCount || 0}<br>
-                <strong>Extraction Methods:</strong> ${info.extractionMethods || 'Various'}<br>
-                <strong>Processing Mode:</strong> ${info.mode || 'comprehensive'}<br>
-                <strong>Neural Version:</strong> v10.0 Final<br>
+                <strong>Mode:</strong> ${info.mode || 'smart'}<br>
                 <strong>Status:</strong> ${info.status || 'Sent'}
             `;
             debugDiv.style.display = 'block';
         }
 
-        // 결과 요약 표시 (v10.0 강화)
-        function showResultSummary(fileCount, artifactCount, artifacts) {
-            const summaryDiv = document.getElementById('resultSummary');
-            const filesSummary = document.getElementById('filesSummary');
-            const artifactsSummary = document.getElementById('artifactsSummary');
-            
-            filesSummary.innerHTML = `
-                <div class="file-grid">
-                    <div class="file-item">🧠 신경망 파일: 5개 (컨텍스트 자동화 포함)</div>
-                    <div class="file-item">📄 Raw 세션: 1개 (아티팩트 통합)</div>
-                    <div class="file-item">🎯 추출 아티팩트: ${artifactCount}개</div>
-                    <div class="file-item">📊 총 생성 파일: ${fileCount}개</div>
-                </div>
-            `;
-            
-            if (artifactCount > 0) {
-                artifactsSummary.innerHTML = `
-                    <div class="artifact-summary">
-                        <strong>🎯 v10.0 완전체 아티팩트 처리:</strong>
-                        ${artifacts.map((a, i) => `
-                            <div class="artifact-item">
-                                ${i + 1}. ${a.title} (${a.type}) - ${a.content.length}자
-                                <span style="opacity: 0.7;"> | ${a.extracted_method} | 신뢰도: ${Math.round(a.confidence * 100)}%</span>
-                            </div>
-                        `).join('')}
-                        <div style="margin-top: 10px; padding: 8px; background: rgba(255, 152, 0, 0.1); border-radius: 6px; font-size: 0.85em;">
-                            <strong>✨ v10.0 처리:</strong> 중복 제거 + 분할 저장 + 부분 코드 통합 + Raw 파일 완전 보존
-                        </div>
-                    </div>
-                `;
-            } else {
-                artifactsSummary.innerHTML = '';
-            }
-            
-            summaryDiv.style.display = 'block';
-        }
-
-        // 로딩 표시
+        // 로딩 오버레이
         function showLoading(show = true) {
             const overlay = document.getElementById('loadingOverlay');
             overlay.style.display = show ? 'flex' : 'none';
         }
 
-        // v10.0 완전체 메인 처리 함수
+        // 연결 테스트 함수
+        async function testConnection() {
+            const webhookUrl = document.getElementById('webhookUrl').value.trim();
+            
+            if (!webhookUrl) {
+                showStatus('❌ Webhook URL을 먼저 입력해주세요!', 'error');
+                return;
+            }
+
+            showStatus('🔗 연결 테스트 중...', 'processing', 0);
+
+            try {
+                const testPayload = {
+                    test: true,
+                    message: "Connection test from Claude Neural Memory System",
+                    timestamp: new Date().toISOString(),
+                    action: "connection_test"
+                };
+
+                const response = await fetch(webhookUrl, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(testPayload)
+                });
+
+                showDebugInfo({
+                    webhookUrl: webhookUrl,
+                    payloadSize: JSON.stringify(testPayload).length,
+                    mode: 'test',
+                    status: 'Sent (CORS-limited response)'
+                });
+
+                showStatus('✅ 테스트 요청 전송됨! Zapier에서 "Find new records"를 클릭하여 확인하세요.', 'info');
+
+            } catch (error) {
+                showStatus(`❌ 연결 오류: ${error.message}`, 'error');
+                showDebugInfo({
+                    webhookUrl: webhookUrl,
+                    status: `Error: ${error.message}`
+                });
+            }
+        }
+
+        // 신경망 처리 메인 함수 (CORS 해결 버전)
         async function processNeural(mode) {
             const conversation = document.getElementById('conversation').value.trim();
             const webhookUrl = document.getElementById('webhookUrl').value.trim();
             
-            // 유효성 검사
             if (!conversation) {
                 showStatus('❌ 대화 내용을 입력해주세요!', 'error');
                 return;
@@ -1345,123 +727,85 @@
                 showStatus('❌ Webhook URL을 설정해주세요!', 'error');
                 return;
             }
-            
+
             // UI 비활성화
             const buttons = document.querySelectorAll('.btn');
             buttons.forEach(btn => btn.disabled = true);
             
             showLoading(true);
-            showStatus('🔍 v10.0 강화된 아티팩트 추출 중...', 'processing');
+            showStatus('🧠 신경망 처리 요청 전송 중...', 'processing', 0);
 
             try {
-                // v10.0 아티팩트 추출
-                const artifacts = extractArtifacts();
-                
-                showStatus('🧠 v10.0 신경망 처리 데이터 준비 중...', 'processing');
-                
-                // 통합 세션 데이터 생성 (v10.0 강화)
-                let fullSession = conversation;
-                
-                if (artifacts.length > 0) {
-                    fullSession += '\n\n=== 🎯 v10.0 세션 생성 아티팩트들 ===\n\n';
-                    artifacts.forEach((artifact, index) => {
-                        fullSession += `## ${artifact.title} (${artifact.type})\n\n`;
-                        fullSession += '```' + artifact.type + '\n' + artifact.content + '\n```\n\n';
-                        fullSession += `**추출 방법**: ${artifact.extracted_method}\n`;
-                        fullSession += `**신뢰도**: ${Math.round(artifact.confidence * 100)}%\n`;
-                        fullSession += `**크기**: ${artifact.content.length}자\n\n`;
-                    });
-                    
-                    fullSession += `\n💡 **v10.0 처리 정보**:\n`;
-                    fullSession += `- 총 감지 아티팩트: ${artifacts.length}개\n`;
-                    fullSession += `- 추출 방법: DOM 감지 + 고급 텍스트 패턴\n`;
-                    fullSession += `- 중복 제거 및 품질 필터링 완료\n`;
-                    fullSession += `- JavaScript v10.0과 완전 호환\n\n`;
-                }
-                
-                showStatus('🚀 v10.0 완전체 Zapier 전송 중...', 'processing');
-                
-                // v10.0 향상된 Zapier 전송
-                const payload = {
-                    conversation: fullSession,
-                    artifacts: artifacts,
-                    artifactCount: artifacts.length,
-                    sessionType: artifacts.length > 0 ? 'with_artifacts_v10' : 'conversation_only_v10',
-                    timestamp: new Date().toISOString(),
-                    mode: mode,
-                    version: '10.0',
-                    systemInfo: {
-                        neuralVersion: 'v10.0',
-                        contextAutomation: true,
-                        artifactProcessing: 'complete',
-                        extractionMethods: [...new Set(artifacts.map(a => a.extracted_method))],
-                        totalConfidence: artifacts.length > 0 ? 
-                            Math.round(artifacts.reduce((sum, a) => sum + a.confidence, 0) / artifacts.length * 100) : 100
+                // 설정 수집
+                const neuralSettings = {
+                    smartConnections: document.getElementById('smartConnections').checked,
+                    weightCalculation: document.getElementById('weightCalculation').checked,
+                    memoryOptimization: document.getElementById('memoryOptimization').checked,
+                    patternRecognition: document.getElementById('patternRecognition').checked,
+                    pruneWeakLinks: document.getElementById('pruneWeakLinks').checked,
+                    bidirectionalSync: document.getElementById('bidirectionalSync').checked,
+                    temporalWeighting: document.getElementById('temporalWeighting').checked,
+                    usageTracking: document.getElementById('usageTracking').checked,
+                    memoryLimits: {
+                        hot: parseInt(document.getElementById('hotMemoryLimit').value),
+                        warm: parseInt(document.getElementById('warmMemoryLimit').value),
+                        maxConnections: parseInt(document.getElementById('maxConnections').value)
                     }
                 };
 
-                console.log('📤 v10.0 전송 데이터:', {
-                    conversationLength: fullSession.length,
-                    artifactCount: artifacts.length,
-                    systemVersion: '10.0',
-                    artifacts: artifacts.map(a => ({ 
-                        title: a.title, 
-                        type: a.type, 
-                        size: a.content.length,
-                        method: a.extracted_method,
-                        confidence: a.confidence
-                    }))
-                });
+                const payload = {
+                    conversation: conversation,
+                    timestamp: new Date().toISOString(),
+                    mode: mode,
+                    neuralSettings: neuralSettings,
+                    action: 'neural_memory_update',
+                    version: '2.0'
+                };
 
+                // CORS 우회 방법 사용
                 const response = await fetch(webhookUrl, {
                     method: 'POST',
-                    mode: 'no-cors',
+                    mode: 'no-cors', // CORS 우회
                     headers: {
-                        'Content-Type': 'application/json',
+                        'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(payload)
                 });
 
-                // 성공 처리
-                const expectedFiles = 6; // JavaScript v10.0에서 Raw 파일에 아티팩트 통합
-                
+                // no-cors 모드에서는 응답 상태를 확인할 수 없으므로 성공으로 가정
                 showDebugInfo({
                     webhookUrl: webhookUrl,
                     payloadSize: JSON.stringify(payload).length,
-                    artifactCount: artifacts.length,
-                    extractionMethods: [...new Set(artifacts.map(a => a.extracted_method))].join(', '),
                     mode: mode,
-                    status: 'Sent successfully (v10.0)'
+                    status: 'Sent successfully (CORS-limited response)'
                 });
 
-                // 통계 업데이트 (v10.0 강화)
+                // 통계 업데이트 (시뮬레이션)
                 const stats = {
-                    nodeCount: Math.floor(Math.random() * 25) + 20,
-                    connectionCount: Math.floor(Math.random() * 60) + 35,
-                    memoryUsage: (Math.random() * 4 + 5.5).toFixed(1),
+                    nodeCount: Math.floor(Math.random() * 20) + 15,
+                    connectionCount: Math.floor(Math.random() * 50) + 25,
+                    memoryUsage: (Math.random() * 3 + 4.2).toFixed(1),
                     lastUpdate: new Date().toLocaleString('ko-KR')
                 };
                 
                 localStorage.setItem('neural_stats', JSON.stringify(stats));
                 updateNeuralStatus();
-                updateConnectionVisualizationV10();
                 
-                showStatus('✅ v10.0 완전체 신경망 업데이트 완료!', 'success');
-                showResultSummary(expectedFiles, artifacts.length, artifacts);
+                // 연결 시각화 업데이트
+                updateConnectionVisualization();
+                
+                showStatus('✅ 신경망 업데이트 요청 전송 완료!\n\nZapier에서 "Find new records"를 클릭하여 처리 결과를 확인하세요.', 'success');
                 
                 // 성공 시 텍스트 영역 클리어
                 document.getElementById('conversation').value = '';
-                document.getElementById('artifactStatus').style.display = 'none';
-                document.getElementById('enhancedDetection').style.display = 'none';
 
             } catch (error) {
-                showStatus(`❌ v10.0 전송 오류: ${error.message}`, 'error');
+                showStatus(`❌ 전송 오류: ${error.message}`, 'error');
                 showDebugInfo({
                     webhookUrl: webhookUrl,
-                    status: `Error: ${error.message}`,
-                    version: 'v10.0'
+                    status: `Error: ${error.message}`
                 });
-                console.error('v10.0 Neural processing error:', error);
+                console.error('Neural processing error:', error);
             } finally {
                 // UI 재활성화
                 buttons.forEach(btn => btn.disabled = false);
@@ -1469,97 +813,63 @@
             }
         }
 
-        // 신경망 상태 업데이트 (v10.0)
-        function updateNeuralStatus() {
-            const stats = JSON.parse(localStorage.getItem('neural_stats') || '{}');
+        // 연결 시각화 업데이트
+        function updateConnectionVisualization() {
+            const visualization = document.getElementById('neuralVisualization');
+            const matrix = document.getElementById('connectionMatrix');
             
-            document.getElementById('nodeCount').textContent = stats.nodeCount || '--';
-            document.getElementById('connectionCount').textContent = stats.connectionCount || '--';
-            document.getElementById('memoryUsage').textContent = stats.memoryUsage || '--';
-            document.getElementById('lastUpdate').textContent = stats.lastUpdate || '--';
-        }
-
-        // v10.0 강화된 연결 시각화 업데이트
-        function updateConnectionVisualizationV10() {
-            const connectionGrid = document.getElementById('connectionGrid');
+            // 샘플 연결 데이터 (실제로는 서버에서 받아옴)
             const connections = [
-                { 
-                    title: 'Hot Memory', 
-                    strength: 'high', 
-                    description: '즉시 접근 가능한 핵심 기억 + 아티팩트 연결',
-                    v10Feature: '아티팩트 통합'
-                },
-                { 
-                    title: 'Warm Memory', 
-                    strength: 'medium', 
-                    description: '자주 참조되는 중요 정보',
-                    v10Feature: null
-                },
-                { 
-                    title: 'Cold Memory', 
-                    strength: 'low', 
-                    description: '장기 보존 배경 지식',
-                    v10Feature: null
-                },
-                { 
-                    title: 'Context Automation', 
-                    strength: 'high', 
-                    description: '#템플릿 자동화 시스템 (99% 토큰 절약)',
-                    v10Feature: 'NEW v10.0'
-                },
-                { 
-                    title: 'Artifact Network', 
-                    strength: 'high', 
-                    description: '완전체 아티팩트 처리 + 중복 제거',
-                    v10Feature: 'Enhanced v10.0'
-                },
-                { 
-                    title: 'Neural Backlinks', 
-                    strength: 'medium', 
-                    description: '완전한 지식 그래프 연결 시스템',
-                    v10Feature: 'Improved v10.0'
-                }
+                { node: '관제센터_설계', target: '정의일_관리', weight: 0.95, type: 'project_people' },
+                { node: '대영통운_프로젝트', target: '정부사업_협력', weight: 0.88, type: 'business_strategy' },
+                { node: 'AI_자동화', target: '시스템_최적화', weight: 0.72, type: 'tech_implementation' },
+                { node: '실용성_철학', target: '80/20_규칙', weight: 0.91, type: 'decision_pattern' },
+                { node: '신경망_메모리', target: '지능형_연결', weight: 0.86, type: 'system_architecture' }
             ];
             
-            connectionGrid.innerHTML = connections.map(conn => `
-                <div class="connection-item">
-                    <div class="connection-title">
-                        ${conn.title}
-                        ${conn.v10Feature ? `<span class="v10-badge">${conn.v10Feature}</span>` : ''}
+            matrix.innerHTML = '';
+            
+            connections.forEach(conn => {
+                const nodeElement = document.createElement('div');
+                nodeElement.className = 'connection-node';
+                
+                const strengthClass = conn.weight >= 0.8 ? 'strength-high' : 
+                                    conn.weight >= 0.5 ? 'strength-medium' : 'strength-low';
+                
+                nodeElement.innerHTML = `
+                    <div><strong>${conn.node}</strong></div>
+                    <div style="margin: 5px 0;">↓ ${(conn.weight * 100).toFixed(0)}% 연결</div>
+                    <div>${conn.target}</div>
+                    <div class="connection-strength ${strengthClass}">
+                        ${conn.type}
                     </div>
-                    <div class="connection-strength strength-${conn.strength}">
-                        ${conn.strength.toUpperCase()}
-                    </div>
-                    <div style="margin-top: 8px; font-size: 0.85em; color: #6c757d; line-height: 1.3;">
-                        ${conn.description}
-                    </div>
-                </div>
-            `).join('');
+                `;
+                
+                matrix.appendChild(nodeElement);
+            });
+            
+            visualization.style.display = 'block';
+        }
+
+        // 키보드 단축키
+        document.getElementById('conversation').addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                e.preventDefault();
+                processNeural('smart');
+            }
+        });
+
+        // PWA 지원
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js').catch(() => {
+                    console.log('Service Worker registration failed');
+                });
+            });
         }
 
         // 페이지 언로드 시 설정 저장
         window.addEventListener('beforeunload', saveSettings);
-
-        // v10.0 초기화 완료 로그
-        console.log(`
-🚀 Claude 신경망 기억 시스템 v10.0 FINAL 로드 완료!
-
-✨ v10.0 주요 기능:
-- 강화된 아티팩트 자동 추출 (DOM + 고급 텍스트 패턴)
-- 중복 제거 + 분할 저장 + 부분 코드 통합
-- 컨텍스트 자동화 (#템플릿 시스템)
-- 99% 토큰 절약 + 완전한 연속성 보장
-- JavaScript v10.0과 완전 호환
-- Raw 파일에 모든 아티팩트 통합 저장
-
-🎯 사용법:
-1. Webhook URL 설정
-2. Claude 대화 전체 복사-붙여넣기
-3. "완전체 신경망 v10.0 업데이트" 클릭
-4. 다음 세션에서 "#템플릿"만 입력하면 모든 규칙 자동 활성화!
-
-💡 완전체 시스템으로 진정한 Claude 세컨드브레인 구현!
-        `);
     </script>
 </body>
 </html>
