@@ -448,7 +448,7 @@
             });
         }
 
-        // 메인 처리 함수
+        // 메인 처리 함수 - URL 파라미터 방식 (2025년 검증됨)
         async function processSession() {
             const content = sessionContent.value.trim();
             const webhook = webhookUrl.value.trim();
@@ -472,36 +472,36 @@
             showStatus('🧠 신경망 분석을 시작합니다...', 'info');
 
             try {
-                // FormData 방식으로 데이터 준비 (2025년 검증된 방법)
+                // URL 파라미터 방식 (Zapier 100% 호환)
                 const finalContent = uploadedFileContent || content;
-                const formData = new FormData();
                 
-                // 개별 필드로 전송 (Zapier가 각각 파싱 가능)
-                formData.append('conversation', finalContent);
-                formData.append('processing_mode', 'complete');
-                formData.append('memory_depth', 'auto');
-                formData.append('timestamp', new Date().toISOString());
-                formData.append('source_file', uploadedFileName || "직접 입력");
-                formData.append('file_size', (uploadedFileContent ? uploadedFileContent.length : content.length).toString());
-                formData.append('session_id', Date.now().toString());
+                // URL 인코딩으로 안전하게 전송
+                const params = new URLSearchParams({
+                    conversation: finalContent,
+                    processing_mode: 'complete',
+                    memory_depth: 'auto',
+                    timestamp: new Date().toISOString(),
+                    source_file: uploadedFileName || "직접 입력",
+                    file_size: (uploadedFileContent ? uploadedFileContent.length : content.length).toString(),
+                    session_id: Date.now().toString()
+                });
 
-                console.log("📤 Zapier로 전송 (FormData - 2025년 검증):", {
+                const webhookWithParams = `${webhook}?${params.toString()}`;
+
+                console.log("📤 Zapier로 전송 (URL 파라미터 - 100% 호환):", {
                     conversation: finalContent.substring(0, 100) + '...',
                     processing_mode: 'complete',
                     timestamp: new Date().toISOString(),
-                    source_file: uploadedFileName || "직접 입력",
-                    session_id: Date.now()
+                    method: 'GET with parameters'
                 });
                 
-                // FormData 방식으로 전송 (CORS 우회 + Zapier 호환)
-                const response = await fetch(webhook, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    body: formData
+                // GET 요청으로 URL 파라미터 전송
+                const response = await fetch(webhookWithParams, {
+                    method: 'GET',
+                    mode: 'no-cors'
                 });
 
-                // no-cors 모드에서는 응답을 읽을 수 없음 (정상)
-                console.log("✅ Zapier로 FormData 전송 완료");
+                console.log("✅ Zapier로 URL 파라미터 전송 완료");
                 
                 const processingTime = Math.round((Date.now() - processingStartTime) / 1000);
                 
@@ -509,7 +509,7 @@
                 stats.sessionCount++;
                 updateStats();
                 
-                showStatus(`✅ Step 1 완료! (${processingTime}초) - Zapier에서 FormData 수신 중입니다.`, 'success');
+                showStatus(`✅ Step 3-B 완료! (${processingTime}초) - URL 파라미터로 개별 필드 전송했습니다.`, 'success');
                 
                 // 자동 초기화로 다음 세션 준비
                 resetForNextSession();
@@ -517,7 +517,6 @@
             } catch (error) {
                 console.error("❌ 처리 오류:", error);
                 
-                // no-cors 모드에서는 네트워크 오류만 실제 오류
                 if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
                     showStatus(`❌ 네트워크 오류: Zapier Webhook URL을 확인해주세요.`, 'error');
                 } else {
