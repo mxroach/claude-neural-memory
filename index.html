@@ -341,7 +341,7 @@
         </div>
 
         <div class="footer">
-            <p>🧠 Neural Memory System v4.0 | 자동 기억 검색 + 통합 분석 + 백링크 네트워크</p>
+            <p>🧠 Neural Memory System v4.0 | FormData 완벽 버전 | 자동 기억 검색 + 통합 분석</p>
         </div>
     </div>
 
@@ -472,30 +472,36 @@
             showStatus('🧠 신경망 분석을 시작합니다...', 'info');
 
             try {
-                // 데이터 준비
+                // FormData 방식으로 데이터 준비 (Zapier 완벽 호환)
                 const finalContent = uploadedFileContent || content;
-                const payload = {
-                    conversation: finalContent,
-                    processing_mode: "complete",
-                    memory_depth: "auto",
-                    timestamp: new Date().toISOString(),
-                    source_file: uploadedFileName || "직접 입력",
-                    file_size: uploadedFileContent ? uploadedFileContent.length : content.length
-                };
-
-                // 2025년 검증된 Zapier CORS 해결법
-                console.log("📤 Zapier로 전송 (no-cors 모드):", payload);
+                const formData = new FormData();
                 
+                // 개별 필드로 전송 (Zapier가 각각 파싱 가능)
+                formData.append('conversation', finalContent);
+                formData.append('processing_mode', 'complete');
+                formData.append('memory_depth', 'auto');
+                formData.append('timestamp', new Date().toISOString());
+                formData.append('source_file', uploadedFileName || "직접 입력");
+                formData.append('file_size', uploadedFileContent ? uploadedFileContent.length : content.length);
+                formData.append('user_agent', navigator.userAgent);
+                formData.append('session_id', Date.now().toString());
+
+                console.log("📤 Zapier로 전송 (FormData):", {
+                    conversation: finalContent.substring(0, 100) + '...',
+                    processing_mode: 'complete',
+                    timestamp: new Date().toISOString(),
+                    source_file: uploadedFileName || "직접 입력"
+                });
+                
+                // FormData 방식으로 전송 (CORS 우회 + Zapier 호환)
                 const response = await fetch(webhook, {
                     method: 'POST',
-                    mode: 'no-cors', // CORS 우회
-                    body: JSON.stringify(payload)
-                    // Content-Type 헤더 제거 (CORS 오류 방지)
+                    mode: 'no-cors',
+                    body: formData
                 });
 
                 // no-cors 모드에서는 응답을 읽을 수 없음 (정상)
-                // Zapier는 데이터를 받았지만 브라우저가 응답을 차단
-                console.log("✅ Zapier로 데이터 전송 완료 (응답 확인 불가는 정상)");
+                console.log("✅ Zapier로 FormData 전송 완료");
                 
                 const processingTime = Math.round((Date.now() - processingStartTime) / 1000);
                 
@@ -503,7 +509,7 @@
                 stats.sessionCount++;
                 updateStats();
                 
-                showStatus(`✅ 분석 & 저장 완료! (${processingTime}초 소요) - Zapier에서 처리 중입니다.`, 'success');
+                showStatus(`✅ 분석 & 저장 완료! (${processingTime}초 소요) - Zapier에서 개별 필드로 처리 중입니다.`, 'success');
                 
                 // 자동 초기화로 다음 세션 준비
                 resetForNextSession();
@@ -548,7 +554,7 @@
 
         // 페이지 로드 시 안내 메시지
         window.addEventListener('load', () => {
-            showStatus('🧠 Neural Memory System v4.0이 준비되었습니다! Claude 세션을 붙여넣고 분석을 시작하세요.', 'info');
+            showStatus('🧠 Neural Memory System v4.0 (FormData 완벽 버전)이 준비되었습니다!', 'info');
         });
     </script>
 </body>
