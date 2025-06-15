@@ -740,12 +740,17 @@
                     stats: sessionStats
                 };
                 
-                console.log("📤 Zapier로 전송:", payload);
+                // 안정적인 CORS 프록시 사용
+                const corsProxy = 'https://cors-anywhere.herokuapp.com/';
+                const proxiedUrl = corsProxy + webhookUrl;
                 
-                const response = await fetch(webhookUrl, {
+                console.log("📤 Zapier로 전송 (CORS 프록시):", payload);
+                
+                const response = await fetch(proxiedUrl, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
                     },
                     body: JSON.stringify(payload)
                 });
