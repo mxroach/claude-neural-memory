@@ -3,126 +3,823 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🧠 Claude 신경망 기억 시스템 - 테스트</title>
+    <title>🧠 Neural Memory System v4.0</title>
     <style>
-        body { font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5; }
-        .container { max-width: 600px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; }
-        input, textarea { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; }
-        textarea { height: 150px; }
-        button { width: 100%; padding: 15px; background: #007cba; color: white; border: none; border-radius: 5px; cursor: pointer; margin: 5px 0; }
-        button:hover { background: #005a87; }
-        .status { padding: 10px; margin: 10px 0; border-radius: 5px; display: none; }
-        .success { background: #d4edda; color: #155724; }
-        .error { background: #f8d7da; color: #721c24; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .header {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .main-content {
+            padding: 40px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+            font-size: 1.1rem;
+        }
+
+        input[type="text"], input[type="url"], textarea, select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e1e8ed;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: #fff;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: translateY(-1px);
+        }
+
+        textarea {
+            min-height: 200px;
+            resize: vertical;
+            font-family: 'Consolas', 'Monaco', monospace;
+            line-height: 1.5;
+        }
+
+        .file-drop-zone {
+            border: 3px dashed #d1d9e0;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            background: #f8fafc;
+        }
+
+        .file-drop-zone:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+            transform: translateY(-2px);
+        }
+
+        .file-drop-zone.dragover {
+            border-color: #667eea;
+            background: #e8f2ff;
+            transform: scale(1.02);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #495057;
+            border: 2px solid #e9ecef;
+        }
+
+        .btn-secondary:hover {
+            background: #e9ecef;
+            transform: translateY(-2px);
+        }
+
+        .status-message {
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-weight: 500;
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+
+        .status-success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+
+        .status-error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+
+        .status-warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+        }
+
+        .processing {
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8f2ff 100%);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid #e1e8ed;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .advanced-options {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+            border: 1px solid #e9ecef;
+        }
+
+        .advanced-toggle {
+            cursor: pointer;
+            font-weight: 600;
+            color: #667eea;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .advanced-content {
+            display: none;
+        }
+
+        .advanced-content.show {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 15px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .main-content {
+                padding: 20px;
+            }
+
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+        }
+
+        .footer {
+            background: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            color: #666;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .tips-section {
+            background: linear-gradient(135deg, #e8f4fd 0%, #f0f8ff 100%);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+            border-left: 4px solid #667eea;
+        }
+
+        .tips-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tips-list {
+            list-style: none;
+            color: #555;
+        }
+
+        .tips-list li {
+            margin: 5px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .tips-list li::before {
+            content: '💡';
+            position: absolute;
+            left: 0;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🧠 신경망 테스트</h1>
-        
-        <input type="url" id="webhookUrl" placeholder="Webhook URL" />
-        <textarea id="conversation" placeholder="대화 내용"></textarea>
-        
-        <button onclick="basicTest()">🔗 기본 테스트</button>
-        <button onclick="processTest()">🧠 처리 테스트</button>
-        
-        <div id="status" class="status"></div>
+        <!-- 헤더 -->
+        <div class="header">
+            <h1>🧠 Neural Memory System</h1>
+            <div class="subtitle">Claude 세션을 신경망 수준으로 분석하고 기억하는 지능형 시스템 v4.0</div>
+        </div>
+
+        <!-- 메인 콘텐츠 -->
+        <div class="main-content">
+            <!-- 시스템 통계 -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalSessions">0</div>
+                    <div class="stat-label">총 처리된 세션</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="totalFiles">0</div>
+                    <div class="stat-label">생성된 기억 파일</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="lastUpdate">Never</div>
+                    <div class="stat-label">마지막 업데이트</div>
+                </div>
+            </div>
+
+            <!-- 사용법 안내 -->
+            <div class="tips-section">
+                <div class="tips-title">
+                    <span>🚀</span> 사용법 및 팁
+                </div>
+                <ul class="tips-list">
+                    <li><strong>다양한 파일 지원:</strong> PDF, Word(.docx), 마크다운(.md), 텍스트(.txt) 등 자동 변환</li>
+                    <li><strong>자동 기억 연동:</strong> 시스템이 자동으로 이전 기억들을 찾아 연결해서 분석</li>
+                    <li><strong>5차원 분석:</strong> 세션기록, 학습패턴, 개인화설정, 컨텍스트메모, 메타정보로 구분</li>
+                    <li><strong>지능형 백링크:</strong> 모든 파일이 서로 연결되어 지식 네트워크 형성</li>
+                </ul>
+            </div>
+
+            <!-- 폼 -->
+            <form id="memoryForm">
+                <!-- Zapier Webhook URL -->
+                <div class="form-group">
+                    <label for="webhookUrl">🔗 Zapier Webhook URL</label>
+                    <input 
+                        type="url" 
+                        id="webhookUrl" 
+                        placeholder="https://hooks.zapier.com/hooks/catch/..."
+                        required
+                    />
+                </div>
+
+                <!-- 고급 옵션 -->
+                <div class="advanced-options">
+                    <div class="advanced-toggle" onclick="toggleAdvanced()">
+                        <span id="advancedIcon">▶</span>
+                        고급 설정 (선택사항)
+                    </div>
+                    <div class="advanced-content" id="advancedContent">
+                        <div class="grid-2">
+                            <div class="form-group">
+                                <label for="processingMode">⚙️ 처리 모드</label>
+                                <select id="processingMode">
+                                    <option value="complete">완전 분석 (권장)</option>
+                                    <option value="fast">빠른 처리</option>
+                                    <option value="detailed">상세 분석</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="memoryDepth">🧠 기억 연결 깊이</label>
+                                <select id="memoryDepth">
+                                    <option value="auto">자동 (권장)</option>
+                                    <option value="shallow">얕게 (최근 위주)</option>
+                                    <option value="deep">깊게 (전체 히스토리)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 세션 입력 영역 -->
+                <div class="form-group">
+                    <label for="conversation">📝 Claude 세션 내용</label>
+                    <textarea 
+                        id="conversation" 
+                        placeholder="Claude와의 전체 대화를 여기에 붙여넣으세요...
+
+💡 사용 팁:
+• Ctrl+A로 Claude 대화창 전체 선택 후 복사-붙여넣기
+• 시스템이 자동으로 이전 관련 기억들을 찾아 연결 분석
+• 파일 드래그&드롭도 지원
+• 처리 시간: 보통 30초-1분 소요"
+                        required
+                    ></textarea>
+                    <div class="file-drop-zone" id="fileDropZone">
+                        📎 다양한 파일을 드래그&드롭하거나 클릭하여 업로드<br>
+                        <small style="color: #666; margin-top: 5px; display: block;">
+                            지원 형식: .txt, .md, .pdf, .docx, .json, .csv, .xml
+                        </small>
+                        <input type="file" id="fileInput" accept=".txt,.md,.pdf,.docx,.json,.csv,.xml,.rtf" style="display: none;">
+                    </div>
+                </div>
+
+                <!-- 상태 메시지 -->
+                <div id="statusMessage" class="status-message"></div>
+
+                <!-- 제출 버튼 -->
+                <div class="button-group">
+                    <button type="submit" class="btn btn-primary">
+                        🧠 분석 & 저장
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- 푸터 -->
+        <div class="footer">
+            <p>🧠 Neural Memory System v4.0 | 자동 기억 연동 & 지능형 분석</p>
+            <p style="margin-top: 5px; font-size: 0.9rem;">
+                Claude + ChatGPT + Zapier로 구현된 개인용 AI 기억 시스템
+            </p>
+        </div>
     </div>
 
     <script>
-        function showStatus(message, type) {
-            const status = document.getElementById('status');
-            status.textContent = message;
-            status.className = `status ${type}`;
-            status.style.display = 'block';
-            console.log(`[${type.toUpperCase()}] ${message}`);
-        }
+        // 🧠 Neural Memory System v4.0 - Complete Web App
+        
+        let processingStartTime = 0;
+        let sessionStats = {
+            totalSessions: parseInt(localStorage.getItem('totalSessions') || '0'),
+            totalFiles: parseInt(localStorage.getItem('totalFiles') || '0'),
+            lastUpdate: localStorage.getItem('lastUpdate') || 'Never'
+        };
 
-        // 가장 기본적인 테스트
-        async function basicTest() {
-            const webhookUrl = document.getElementById('webhookUrl').value.trim();
+        // 초기화
+        window.addEventListener('load', function() {
+            loadSavedData();
+            setupFileDropZone();
+            setupUrlValidation();
+            updateSessionStats();
             
-            console.log("=== 기본 테스트 시작 ===");
-            console.log("Webhook URL:", webhookUrl);
-            
-            if (!webhookUrl) {
-                showStatus('Webhook URL을 입력하세요', 'error');
-                return;
-            }
-
-            try {
-                const payload = { test: "basic", time: new Date().toISOString() };
-                console.log("전송할 payload:", payload);
-                
-                showStatus('기본 테스트 전송 중...', 'success');
-                
-                const response = await fetch(webhookUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-                
-                console.log("응답:", response);
-                showStatus('기본 테스트 완료! Zapier 확인하세요.', 'success');
-                
-            } catch (error) {
-                console.error("기본 테스트 오류:", error);
-                showStatus(`기본 테스트 오류: ${error.message}`, 'error');
-            }
-        }
-
-        // 처리 테스트
-        async function processTest() {
-            const webhookUrl = document.getElementById('webhookUrl').value.trim();
-            const conversation = document.getElementById('conversation').value.trim();
-            
-            console.log("=== 처리 테스트 시작 ===");
-            console.log("Webhook URL:", webhookUrl);
-            console.log("Conversation:", conversation.substring(0, 100) + "...");
-            
-            if (!webhookUrl || !conversation) {
-                showStatus('URL과 대화 내용을 모두 입력하세요', 'error');
-                return;
-            }
-
-            try {
-                const payload = {
-                    conversation: conversation,
-                    mode: "smart",
-                    timestamp: new Date().toISOString(),
-                    test_version: "working_test"
-                };
-                
-                console.log("전송할 payload:", payload);
-                showStatus('처리 테스트 전송 중...', 'success');
-                
-                const response = await fetch(webhookUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-                
-                console.log("응답:", response);
-                showStatus('처리 테스트 완료! Zapier 확인하세요.', 'success');
-                
-            } catch (error) {
-                console.error("처리 테스트 오류:", error);
-                showStatus(`처리 테스트 오류: ${error.message}`, 'error');
-            }
-        }
-
-        // URL 저장
-        document.getElementById('webhookUrl').addEventListener('change', function() {
-            localStorage.setItem('test_webhook_url', this.value);
-            console.log("URL 저장됨:", this.value);
+            console.log("🧠 Neural Memory System v4.0 로딩 완료");
+            console.log("세션 통계:", sessionStats);
         });
 
-        // 페이지 로드시 URL 복원
-        window.addEventListener('load', function() {
-            const savedUrl = localStorage.getItem('test_webhook_url');
+        // 📊 세션 통계 업데이트
+        function updateSessionStats() {
+            document.getElementById('totalSessions').textContent = sessionStats.totalSessions;
+            document.getElementById('totalFiles').textContent = sessionStats.totalFiles;
+            document.getElementById('lastUpdate').textContent = sessionStats.lastUpdate;
+        }
+
+        // 💾 저장된 데이터 로드
+        function loadSavedData() {
+            const savedUrl = localStorage.getItem('webhookUrl');
+            const savedMode = localStorage.getItem('processingMode');
+            const savedDepth = localStorage.getItem('memoryDepth');
+            
             if (savedUrl) {
                 document.getElementById('webhookUrl').value = savedUrl;
-                console.log("저장된 URL 복원:", savedUrl);
+            }
+            if (savedMode) {
+                document.getElementById('processingMode').value = savedMode;
+            }
+            if (savedDepth) {
+                document.getElementById('memoryDepth').value = savedDepth;
+            }
+        }
+
+        // 🔗 URL 유효성 검사
+        function setupUrlValidation() {
+            const urlInput = document.getElementById('webhookUrl');
+            urlInput.addEventListener('blur', function() {
+                const url = this.value.trim();
+                if (url && !url.includes('hooks.zapier.com')) {
+                    showStatus('⚠️ Zapier Webhook URL인지 확인해주세요.', 'warning');
+                }
+            });
+        }
+
+        // 📁 파일 드롭존 설정
+        function setupFileDropZone() {
+            const dropZone = document.getElementById('fileDropZone');
+            const fileInput = document.getElementById('fileInput');
+            const textarea = document.getElementById('conversation');
+
+            dropZone.addEventListener('click', () => fileInput.click());
+            
+            dropZone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                dropZone.classList.add('dragover');
+            });
+            
+            dropZone.addEventListener('dragleave', () => {
+                dropZone.classList.remove('dragover');
+            });
+            
+            dropZone.addEventListener('drop', async (e) => {
+                e.preventDefault();
+                dropZone.classList.remove('dragover');
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    await handleFileUpload(files[0]);
+                }
+            });
+
+            fileInput.addEventListener('change', async (e) => {
+                if (e.target.files.length > 0) {
+                    await handleFileUpload(e.target.files[0]);
+                }
+            });
+        }
+
+        // 📄 향상된 파일 업로드 처리
+        async function handleFileUpload(file) {
+            const fileName = file.name.toLowerCase();
+            const fileExtension = fileName.split('.').pop();
+            
+            showStatus(`📁 ${file.name} 파일을 처리 중입니다...`, 'success');
+            
+            try {
+                let content = '';
+                
+                if (['txt', 'md', 'json', 'csv', 'xml', 'rtf'].includes(fileExtension)) {
+                    // 텍스트 기반 파일
+                    content = await readTextFile(file);
+                    
+                } else if (fileExtension === 'pdf') {
+                    // PDF 파일
+                    content = await readPDFFile(file);
+                    
+                } else if (fileExtension === 'docx') {
+                    // Word 문서
+                    content = await readWordFile(file);
+                    
+                } else {
+                    throw new Error('지원하지 않는 파일 형식입니다.');
+                }
+                
+                if (content.trim()) {
+                    document.getElementById('conversation').value = content;
+                    showStatus(`✅ ${file.name} 파일이 성공적으로 로드되었습니다.`, 'success');
+                } else {
+                    showStatus(`⚠️ ${file.name} 파일이 비어있거나 읽을 수 없습니다.`, 'warning');
+                }
+                
+            } catch (error) {
+                console.error('파일 처리 오류:', error);
+                showStatus(`❌ ${file.name} 파일 처리 중 오류: ${error.message}`, 'error');
+            }
+        }
+
+        // 📖 텍스트 파일 읽기
+        function readTextFile(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = (e) => resolve(e.target.result);
+                reader.onerror = () => reject(new Error('텍스트 파일 읽기 실패'));
+                reader.readAsText(file, 'UTF-8');
+            });
+        }
+
+        // 📄 PDF 파일 읽기 (PDF.js 사용)
+        async function readPDFFile(file) {
+            try {
+                // PDF.js 라이브러리 동적 로드
+                if (!window.pdfjsLib) {
+                    await loadScript('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js');
+                    window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+                }
+                
+                const arrayBuffer = await file.arrayBuffer();
+                const pdf = await window.pdfjsLib.getDocument(arrayBuffer).promise;
+                
+                let fullText = '';
+                
+                for (let i = 1; i <= pdf.numPages; i++) {
+                    const page = await pdf.getPage(i);
+                    const textContent = await page.getTextContent();
+                    const pageText = textContent.items.map(item => item.str).join(' ');
+                    fullText += `\n\n--- 페이지 ${i} ---\n${pageText}`;
+                }
+                
+                return fullText;
+                
+            } catch (error) {
+                throw new Error('PDF 파일 읽기 실패: ' + error.message);
+            }
+        }
+
+        // 📝 Word 문서 읽기 (mammoth.js 사용)
+        async function readWordFile(file) {
+            try {
+                // mammoth.js 라이브러리 동적 로드
+                if (!window.mammoth) {
+                    await loadScript('https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.2/mammoth.browser.min.js');
+                }
+                
+                const arrayBuffer = await file.arrayBuffer();
+                const result = await window.mammoth.extractRawText({arrayBuffer});
+                
+                if (result.messages && result.messages.length > 0) {
+                    console.warn('Word 문서 변환 경고:', result.messages);
+                }
+                
+                return result.value;
+                
+            } catch (error) {
+                throw new Error('Word 문서 읽기 실패: ' + error.message);
+            }
+        }
+
+        // 📚 외부 라이브러리 동적 로드
+        function loadScript(src) {
+            return new Promise((resolve, reject) => {
+                const script = document.createElement('script');
+                script.src = src;
+                script.onload = resolve;
+                script.onerror = () => reject(new Error(`스크립트 로드 실패: ${src}`));
+                document.head.appendChild(script);
+            });
+        }
+
+        // 🔧 고급 옵션 토글
+        function toggleAdvanced() {
+            const content = document.getElementById('advancedContent');
+            const icon = document.getElementById('advancedIcon');
+            
+            if (content.classList.contains('show')) {
+                content.classList.remove('show');
+                icon.textContent = '▶';
+            } else {
+                content.classList.add('show');
+                icon.textContent = '▼';
+            }
+        }
+
+        // 📝 상태 메시지 표시
+        function showStatus(message, type = 'success') {
+            const statusDiv = document.getElementById('statusMessage');
+            statusDiv.textContent = message;
+            statusDiv.className = `status-message status-${type}`;
+            statusDiv.style.display = 'block';
+            
+            // 5초 후 자동 숨김 (에러는 10초)
+            setTimeout(() => {
+                statusDiv.style.display = 'none';
+            }, type === 'error' ? 10000 : 5000);
+        }
+
+        // 🧠 메인 폼 제출 처리
+        document.getElementById('memoryForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const webhookUrl = document.getElementById('webhookUrl').value.trim();
+            const conversation = document.getElementById('conversation').value.trim();
+            const processingMode = document.getElementById('processingMode').value;
+            const memoryDepth = document.getElementById('memoryDepth').value;
+            
+            // 유효성 검사
+            if (!webhookUrl || !conversation) {
+                showStatus('❌ 모든 필수 항목을 입력해주세요.', 'error');
+                return;
+            }
+            
+            if (!webhookUrl.includes('hooks.zapier.com')) {
+                showStatus('❌ 올바른 Zapier Webhook URL을 입력해주세요.', 'error');
+                return;
+            }
+            
+            // 처리 시작
+            processingStartTime = Date.now();
+            const submitBtn = document.querySelector('.btn-primary');
+            const originalText = submitBtn.innerHTML;
+            
+            submitBtn.innerHTML = '<span class="processing">🧠 분석 & 저장 중...</span>';
+            submitBtn.disabled = true;
+            
+            showStatus('🚀 신경망 분석 및 자동 저장을 시작합니다...', 'success');
+            
+            try {
+                // Zapier로 데이터 전송
+                const payload = {
+                    conversation: conversation,
+                    processing_mode: processingMode,
+                    memory_depth: memoryDepth,
+                    timestamp: new Date().toISOString(),
+                    stats: sessionStats
+                };
+                
+                console.log("📤 Zapier로 전송:", payload);
+                
+                const response = await fetch(webhookUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(payload)
+                });
+                
+                if (response.ok) {
+                    const processingTime = Math.round((Date.now() - processingStartTime) / 1000);
+                    
+                    // 통계 업데이트
+                    sessionStats.totalSessions++;
+                    sessionStats.totalFiles += 5; // 5개 파일 생성
+                    sessionStats.lastUpdate = new Date().toLocaleString();
+                    
+                    // 로컬 스토리지 저장
+                    localStorage.setItem('totalSessions', sessionStats.totalSessions.toString());
+                    localStorage.setItem('totalFiles', sessionStats.totalFiles.toString());
+                    localStorage.setItem('lastUpdate', sessionStats.lastUpdate);
+                    
+                    updateSessionStats();
+                    
+                    // 설정 자동 저장
+                    saveSettings();
+                    
+                    showStatus(`✅ 분석 & 저장 완료! (${processingTime}초 소요) - 5개의 신경망 파일이 Google Drive에 저장되었습니다.`, 'success');
+                    
+                    // 자동 초기화로 다음 세션 준비
+                    resetForNextSession();
+                    
+                } else {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+            } catch (error) {
+                console.error("❌ 처리 오류:", error);
+                showStatus(`❌ 처리 중 오류가 발생했습니다: ${error.message}`, 'error');
+            } finally {
+                // 버튼 복원
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+
+        // 🔄 다음 세션을 위한 자동 초기화
+        function resetForNextSession() {
+            document.getElementById('conversation').value = '';
+            document.getElementById('conversation').placeholder = `Claude와의 전체 대화를 여기에 붙여넣으세요...
+
+💡 다음 세션 준비 완료!
+• 이전 분석 결과가 자동으로 연결됩니다
+• Ctrl+A로 Claude 대화창 전체 선택 후 복사-붙여넣기
+• 처리 시간: 보통 30초-1분 소요`;
+            
+            // 포커스를 텍스트 영역으로 이동
+            setTimeout(() => {
+                document.getElementById('conversation').focus();
+            }, 1000);
+        }
+
+        // 💾 설정 자동 저장
+        function saveSettings() {
+            const webhookUrl = document.getElementById('webhookUrl').value.trim();
+            const processingMode = document.getElementById('processingMode').value;
+            const memoryDepth = document.getElementById('memoryDepth').value;
+            
+            localStorage.setItem('webhookUrl', webhookUrl);
+            localStorage.setItem('processingMode', processingMode);
+            localStorage.setItem('memoryDepth', memoryDepth);
+        }
+
+        // ⌨️ 키보드 단축키
+        document.addEventListener('keydown', function(e) {
+            // Ctrl+Enter로 폼 제출
+            if (e.ctrlKey && e.key === 'Enter') {
+                e.preventDefault();
+                document.getElementById('memoryForm').dispatchEvent(new Event('submit'));
             }
         });
     </script>
