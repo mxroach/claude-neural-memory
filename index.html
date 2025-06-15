@@ -10,550 +10,508 @@
             padding: 0;
             box-sizing: border-box;
         }
-
+        
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             padding: 20px;
-            color: #333;
         }
-
+        
         .container {
             max-width: 800px;
             margin: 0 auto;
-            background: white;
+            background: rgba(255, 255, 255, 0.95);
             border-radius: 20px;
+            padding: 30px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            overflow: hidden;
+            backdrop-filter: blur(10px);
         }
-
-        .header {
-            background: linear-gradient(135deg, #5f72bd 0%, #9b59b6 100%);
-            color: white;
-            padding: 30px;
+        
+        h1 {
             text-align: center;
-        }
-
-        .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-
-        .header p {
-            font-size: 1.2em;
-            opacity: 0.9;
-        }
-
-        .content {
-            padding: 40px;
-        }
-
-        .input-section {
-            background: #f8f9fa;
-            border-radius: 15px;
-            padding: 30px;
+            color: #2c3e50;
             margin-bottom: 30px;
+            font-size: 2.5em;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
-
+        
         .input-group {
             margin-bottom: 25px;
         }
-
+        
         label {
             display: block;
+            margin-bottom: 10px;
             font-weight: 600;
-            margin-bottom: 8px;
-            color: #555;
+            color: #34495e;
             font-size: 1.1em;
         }
-
-        textarea, input {
+        
+        input[type="url"], textarea {
             width: 100%;
             padding: 15px;
-            border: 2px solid #e1e5e9;
+            border: 2px solid #e1e8ed;
             border-radius: 10px;
             font-size: 16px;
             transition: all 0.3s ease;
-            font-family: inherit;
+            background: rgba(255, 255, 255, 0.9);
         }
-
-        textarea:focus, input:focus {
+        
+        input[type="url"]:focus, textarea:focus {
             outline: none;
             border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
+            transform: translateY(-2px);
         }
-
+        
         textarea {
-            min-height: 120px;
             resize: vertical;
+            min-height: 200px;
+            font-family: 'Courier New', monospace;
+            line-height: 1.6;
         }
-
-        .file-upload {
-            border: 2px dashed #667eea;
-            border-radius: 10px;
-            padding: 30px;
+        
+        .button-container {
             text-align: center;
-            background: #f8f9ff;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            margin: 30px 0;
         }
-
-        .file-upload:hover {
-            background: #f0f3ff;
-            border-color: #5f72bd;
-        }
-
-        .file-upload.dragover {
-            background: #e8f2ff;
-            border-color: #667eea;
-            transform: scale(1.02);
-        }
-
-        .upload-icon {
-            font-size: 3em;
-            margin-bottom: 15px;
-            color: #667eea;
-        }
-
-        .upload-text {
-            font-size: 1.2em;
-            color: #666;
-            margin-bottom: 10px;
-        }
-
-        .upload-hint {
-            font-size: 0.9em;
-            color: #888;
-        }
-
-        .btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        
+        .process-btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
             color: white;
             border: none;
-            padding: 15px 30px;
-            border-radius: 10px;
-            font-size: 1.1em;
+            padding: 15px 40px;
+            font-size: 18px;
             font-weight: 600;
+            border-radius: 50px;
             cursor: pointer;
             transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
         }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        
+        .process-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
         }
-
-        .btn:disabled {
+        
+        .process-btn:disabled {
             opacity: 0.6;
             cursor: not-allowed;
             transform: none;
         }
-
-        .btn-large {
-            padding: 20px 40px;
-            font-size: 1.3em;
-            width: 100%;
-            justify-content: center;
+        
+        .status-display {
+            margin-top: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 15px;
+            border-left: 5px solid #667eea;
         }
-
-        .status-message {
-            padding: 15px;
-            border-radius: 10px;
-            margin: 20px 0;
-            font-weight: 500;
-            text-align: center;
-            transition: all 0.3s ease;
+        
+        .status-item {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
         }
-
+        
         .status-success {
             background: #d4edda;
             color: #155724;
             border: 1px solid #c3e6cb;
         }
-
+        
         .status-error {
             background: #f8d7da;
             color: #721c24;
             border: 1px solid #f5c6cb;
         }
-
+        
         .status-info {
-            background: #d1ecf1;
-            color: #0c5460;
-            border: 1px solid #bee5eb;
+            background: #cce7ff;
+            color: #004085;
+            border: 1px solid #b3d7ff;
         }
-
-        .file-info {
-            background: #e8f5e8;
-            border: 1px solid #c3e6cb;
-            border-radius: 8px;
-            padding: 15px;
-            margin-top: 15px;
-        }
-
-        .file-name {
-            font-weight: 600;
-            color: #155724;
-            margin-bottom: 5px;
-        }
-
-        .file-details {
-            font-size: 0.9em;
-            color: #666;
-        }
-
-        .processing-animation {
-            display: inline-block;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .hidden {
-            display: none;
-        }
-
+        
         .stats {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
             margin-top: 30px;
         }
-
+        
         .stat-card {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
             padding: 20px;
             border-radius: 15px;
             text-align: center;
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
         }
-
+        
         .stat-number {
-            font-size: 2em;
+            font-size: 2.5em;
             font-weight: bold;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
         }
-
-        .stat-label {
-            font-size: 0.9em;
-            opacity: 0.9;
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
         }
-
-        .footer {
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .chunk-info {
+            background: #e3f2fd;
+            color: #1565c0;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 1px solid #bbdefb;
+        }
+        
+        .chunk-progress {
+            background: #f0f0f0;
+            border-radius: 10px;
+            height: 20px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+        
+        .chunk-progress-bar {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            height: 100%;
+            transition: width 0.3s ease;
+            border-radius: 10px;
+        }
+        
+        .chunk-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+            margin: 15px 0;
+            font-size: 14px;
+        }
+        
+        .chunk-detail {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 8px;
+            border-radius: 5px;
             text-align: center;
-            padding: 30px;
-            background: #f8f9fa;
-            color: #666;
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                margin: 10px;
-                border-radius: 15px;
-            }
-            
-            .content {
-                padding: 20px;
-            }
-            
-            .header {
-                padding: 20px;
-            }
-            
-            .header h1 {
-                font-size: 2em;
-            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h1>🧠 Neural Memory System v4.0</h1>
-            <p>Claude 세션을 신경망 수준으로 분석하고 자동으로 관련 기억을 검색하여 연결</p>
-        </div>
-
-        <div class="content">
-            <div class="input-section">
-                <div class="input-group">
-                    <label for="sessionContent">📝 Claude 세션 내용</label>
-                    <textarea 
-                        id="sessionContent" 
-                        placeholder="Claude와의 대화 내용을 여기에 붙여넣으세요. 전체 세션을 복사해서 넣거나, 특정 부분만 분석하고 싶다면 해당 부분만 넣어도 됩니다..."
-                        rows="8"
-                    ></textarea>
+        <h1>🧠 Neural Memory System v4.0</h1>
+        
+        <div class="chunk-info">
+            <strong>🔄 스마트 분할 전송 시스템:</strong> 긴 텍스트를 최적 크기로 자동 분할하여 안전하게 전송합니다.
+            <div class="chunk-details" id="chunkDetails">
+                <div class="chunk-detail">
+                    <strong>텍스트 길이</strong><br>
+                    <span id="textLength">0</span>자
                 </div>
-
-                <div class="input-group">
-                    <label>📁 다양한 파일 형식 지원</label>
-                    <div class="file-upload" id="fileUpload">
-                        <div class="upload-icon">📎</div>
-                        <div class="upload-text">다양한 파일을 드래그&드롭하거나 클릭하세요</div>
-                        <div class="upload-hint">지원 형식: .txt, .md, .pdf, .docx, .json, .csv</div>
-                        <input type="file" id="fileInput" style="display: none;" 
-                               accept=".txt,.md,.pdf,.docx,.json,.csv">
-                    </div>
-                    <div id="fileInfo" class="file-info hidden">
-                        <div class="file-name" id="fileName"></div>
-                        <div class="file-details" id="fileDetails"></div>
-                    </div>
+                <div class="chunk-detail">
+                    <strong>예상 청크</strong><br>
+                    <span id="estimatedChunks">0</span>개
                 </div>
-
-                <div class="input-group">
-                    <label for="webhookUrl">🔗 Zapier Webhook URL</label>
-                    <input 
-                        type="url" 
-                        id="webhookUrl" 
-                        placeholder="https://hooks.zapier.com/hooks/catch/YOUR_WEBHOOK_ID"
-                        value=""
-                    >
+                <div class="chunk-detail">
+                    <strong>청크 크기</strong><br>
+                    <span id="chunkSize">1000</span>자
+                </div>
+                <div class="chunk-detail">
+                    <strong>전송 시간</strong><br>
+                    <span id="estimatedTime">0</span>초
                 </div>
             </div>
+        </div>
+        
+        <div class="input-group">
+            <label for="webhookUrl">🔗 Zapier Webhook URL</label>
+            <input type="url" id="webhookUrl" placeholder="https://hooks.zapier.com/hooks/catch/..." required>
+        </div>
+        
+        <div class="input-group">
+            <label for="sessionContent">📝 Claude 세션 내용</label>
+            <textarea id="sessionContent" placeholder="Claude와의 대화 내용을 여기에 붙여넣으세요...
 
-            <button class="btn btn-large" id="processBtn">
-                <span class="btn-text">🚀 분석 & 저장</span>
+📏 길이 제한 없음! 아무리 긴 텍스트도 자동으로 분할하여 처리합니다.
+
+예시:
+오늘 Claude와 Neural Memory System v4.0을 완성했습니다. 
+
+주요 성과:
+1. GitHub Pages 웹앱 구축 완료
+2. CORS 문제를 URL 파라미터 방식으로 해결
+3. Zapier 워크플로우 구성 완료
+4. 분할 전송 시스템 구현으로 무제한 길이 지원
+
+[길고 긴 내용도 모두 안전하게 전송됩니다...]" oninput="updateChunkInfo()"></textarea>
+        </div>
+        
+        <div class="button-container">
+            <button class="process-btn" onclick="processSession()">
+                🚀 분석 & 저장
             </button>
-
-            <div id="statusMessage" class="status-message hidden"></div>
-
-            <div class="stats">
-                <div class="stat-card">
-                    <div class="stat-number" id="sessionCount">0</div>
-                    <div class="stat-label">처리된 세션</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="fileCount">0</div>
-                    <div class="stat-label">업로드된 파일</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="totalSize">0 KB</div>
-                    <div class="stat-label">총 데이터 크기</div>
-                </div>
-            </div>
         </div>
-
-        <div class="footer">
-            <p>🧠 Neural Memory System v4.0 | FormData 완벽 버전 | 자동 기억 검색 + 통합 분석</p>
+        
+        <div class="chunk-progress" id="chunkProgress" style="display: none;">
+            <div class="chunk-progress-bar" id="chunkProgressBar"></div>
+        </div>
+        
+        <div class="status-display" id="statusDisplay" style="display: none;">
+            <h3>📊 처리 상태</h3>
+            <div id="statusContent"></div>
+        </div>
+        
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-number" id="sessionCount">0</div>
+                <div>처리된 세션</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalChunks">0</div>
+                <div>전송된 청크</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="successRate">100%</div>
+                <div>성공률</div>
+            </div>
         </div>
     </div>
 
     <script>
-        // 전역 상태 관리
-        let uploadedFileContent = '';
-        let uploadedFileName = '';
-        let stats = {
-            sessionCount: 0,
-            fileCount: 0,
-            totalSize: 0
-        };
+        let sessionCount = 0;
+        let totalChunks = 0;
+        let successCount = 0;
+        let totalAttempts = 0;
 
-        // DOM 요소 참조
-        const sessionContent = document.getElementById('sessionContent');
-        const fileUpload = document.getElementById('fileUpload');
-        const fileInput = document.getElementById('fileInput');
-        const fileInfo = document.getElementById('fileInfo');
-        const fileName = document.getElementById('fileName');
-        const fileDetails = document.getElementById('fileDetails');
-        const webhookUrl = document.getElementById('webhookUrl');
-        const processBtn = document.getElementById('processBtn');
-        const statusMessage = document.getElementById('statusMessage');
-
-        // 통계 업데이트
-        function updateStats() {
-            document.getElementById('sessionCount').textContent = stats.sessionCount;
-            document.getElementById('fileCount').textContent = stats.fileCount;
-            document.getElementById('totalSize').textContent = 
-                stats.totalSize >= 1024 ? `${(stats.totalSize / 1024).toFixed(1)} MB` : `${stats.totalSize} KB`;
-        }
-
-        // 상태 메시지 표시
-        function showStatus(message, type = 'info') {
-            statusMessage.textContent = message;
-            statusMessage.className = `status-message status-${type}`;
-            statusMessage.classList.remove('hidden');
+        // 청크 정보 실시간 업데이트
+        function updateChunkInfo() {
+            const content = document.getElementById('sessionContent').value;
+            const chunkSize = 1000; // 안전한 청크 크기
             
-            if (type === 'success') {
-                setTimeout(() => {
-                    statusMessage.classList.add('hidden');
-                }, 5000);
-            }
+            const textLength = content.length;
+            const estimatedChunks = Math.ceil(textLength / chunkSize);
+            const estimatedTime = estimatedChunks * 0.5; // 청크당 0.5초
+            
+            document.getElementById('textLength').textContent = textLength.toLocaleString();
+            document.getElementById('estimatedChunks').textContent = estimatedChunks;
+            document.getElementById('chunkSize').textContent = chunkSize;
+            document.getElementById('estimatedTime').textContent = estimatedTime.toFixed(1);
         }
 
-        // 파일 업로드 처리
-        fileUpload.addEventListener('click', () => fileInput.click());
-        fileUpload.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            fileUpload.classList.add('dragover');
-        });
-        fileUpload.addEventListener('dragleave', () => {
-            fileUpload.classList.remove('dragover');
-        });
-        fileUpload.addEventListener('drop', (e) => {
-            e.preventDefault();
-            fileUpload.classList.remove('dragover');
-            const files = e.dataTransfer.files;
-            if (files.length > 0) {
-                handleFile(files[0]);
+        // 스마트 텍스트 분할
+        function smartChunk(text, maxSize = 1000) {
+            if (text.length <= maxSize) {
+                return [text];
             }
-        });
 
-        fileInput.addEventListener('change', (e) => {
-            if (e.target.files.length > 0) {
-                handleFile(e.target.files[0]);
+            const chunks = [];
+            let start = 0;
+
+            while (start < text.length) {
+                let end = start + maxSize;
+                
+                // 단어 경계에서 자르기
+                if (end < text.length) {
+                    // 문장 끝에서 자르기 시도
+                    const sentenceEnd = text.lastIndexOf('.', end);
+                    const questionEnd = text.lastIndexOf('?', end);
+                    const exclamationEnd = text.lastIndexOf('!', end);
+                    
+                    const bestSentenceEnd = Math.max(sentenceEnd, questionEnd, exclamationEnd);
+                    
+                    if (bestSentenceEnd > start + maxSize * 0.7) {
+                        end = bestSentenceEnd + 1;
+                    } else {
+                        // 단어 경계에서 자르기
+                        const spaceIndex = text.lastIndexOf(' ', end);
+                        const newlineIndex = text.lastIndexOf('\n', end);
+                        
+                        const bestBreak = Math.max(spaceIndex, newlineIndex);
+                        if (bestBreak > start + maxSize * 0.5) {
+                            end = bestBreak;
+                        }
+                    }
+                }
+
+                chunks.push(text.substring(start, end).trim());
+                start = end;
             }
-        });
 
-        // 파일 처리
-        async function handleFile(file) {
-            uploadedFileName = file.name;
-            const fileSize = Math.round(file.size / 1024);
-
-            try {
-                const text = await readFileAsText(file);
-                uploadedFileContent = text;
-                
-                // 파일 정보 표시
-                fileName.textContent = `📄 ${file.name}`;
-                fileDetails.textContent = `크기: ${fileSize} KB | 타입: ${file.type || '알 수 없음'}`;
-                fileInfo.classList.remove('hidden');
-                
-                // 통계 업데이트
-                stats.fileCount++;
-                stats.totalSize += fileSize;
-                updateStats();
-                
-                showStatus(`✅ 파일 "${file.name}"이 성공적으로 로드되었습니다.`, 'success');
-                
-            } catch (error) {
-                console.error('파일 읽기 오류:', error);
-                showStatus(`❌ 파일 읽기 중 오류가 발생했습니다: ${error.message}`, 'error');
-            }
+            return chunks.filter(chunk => chunk.length > 0);
         }
 
-        // 파일을 텍스트로 읽기
-        function readFileAsText(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onload = (e) => resolve(e.target.result);
-                reader.onerror = (e) => reject(new Error('파일 읽기 실패'));
-                reader.readAsText(file, 'UTF-8');
-            });
-        }
-
-        // 메인 처리 함수 - URL 파라미터 방식 (2025년 검증됨)
+        // 메인 처리 함수 - 스마트 분할 전송
         async function processSession() {
-            const content = sessionContent.value.trim();
-            const webhook = webhookUrl.value.trim();
+            const content = document.getElementById('sessionContent').value.trim();
+            const webhook = document.getElementById('webhookUrl').value.trim();
 
             // 입력 검증
-            if (!content && !uploadedFileContent) {
-                showStatus('❌ Claude 세션 내용을 입력하거나 파일을 업로드해주세요.', 'error');
+            if (!content) {
+                addStatus('❌ 세션 내용을 입력해주세요.', 'error');
                 return;
             }
 
             if (!webhook) {
-                showStatus('❌ Zapier Webhook URL을 입력해주세요.', 'error');
+                addStatus('❌ Zapier Webhook URL을 입력해주세요.', 'error');
                 return;
             }
 
-            // 처리 시작
-            const processingStartTime = Date.now();
+            // URL 유효성 검증
+            try {
+                new URL(webhook);
+            } catch {
+                addStatus('❌ 올바른 Webhook URL을 입력해주세요.', 'error');
+                return;
+            }
+
+            const processBtn = document.querySelector('.process-btn');
             processBtn.disabled = true;
-            processBtn.innerHTML = '<span class="processing-animation">⚙️</span> 신경망 분석 중...';
-            
-            showStatus('🧠 신경망 분석을 시작합니다...', 'info');
+            processBtn.innerHTML = '<div class="loading"></div>분할 & 전송 중...';
 
             try {
-                // URL 파라미터 방식 (Zapier 100% 호환)
-                const finalContent = uploadedFileContent || content;
-                
-                // URL 인코딩으로 안전하게 전송
-                const params = new URLSearchParams({
-                    conversation: finalContent,
-                    processing_mode: 'complete',
-                    memory_depth: 'auto',
-                    timestamp: new Date().toISOString(),
-                    source_file: uploadedFileName || "직접 입력",
-                    file_size: (uploadedFileContent ? uploadedFileContent.length : content.length).toString(),
-                    session_id: Date.now().toString()
-                });
+                // 텍스트 분할
+                const chunks = smartChunk(content, 1000);
+                const timestamp = new Date().toISOString();
+                const sessionId = Date.now();
 
-                const webhookWithParams = `${webhook}?${params.toString()}`;
+                addStatus(`📋 텍스트 분할 완료: ${chunks.length}개 청크`, 'info');
+                addStatus(`📏 원본 길이: ${content.length.toLocaleString()}자`, 'info');
 
-                console.log("📤 Zapier로 전송 (URL 파라미터 - 100% 호환):", {
-                    conversation: finalContent.substring(0, 100) + '...',
-                    processing_mode: 'complete',
-                    timestamp: new Date().toISOString(),
-                    method: 'GET with parameters'
-                });
-                
-                // GET 요청으로 URL 파라미터 전송
-                const response = await fetch(webhookWithParams, {
-                    method: 'GET',
-                    mode: 'no-cors'
-                });
+                // 진행률 표시 시작
+                const progressContainer = document.getElementById('chunkProgress');
+                const progressBar = document.getElementById('chunkProgressBar');
+                progressContainer.style.display = 'block';
 
-                console.log("✅ Zapier로 URL 파라미터 전송 완료");
-                
-                const processingTime = Math.round((Date.now() - processingStartTime) / 1000);
-                
-                // 통계 업데이트
-                stats.sessionCount++;
-                updateStats();
-                
-                showStatus(`✅ Step 3-B 완료! (${processingTime}초) - URL 파라미터로 개별 필드 전송했습니다.`, 'success');
-                
-                // 자동 초기화로 다음 세션 준비
-                resetForNextSession();
-                
-            } catch (error) {
-                console.error("❌ 처리 오류:", error);
-                
-                if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
-                    showStatus(`❌ 네트워크 오류: Zapier Webhook URL을 확인해주세요.`, 'error');
-                } else {
-                    showStatus(`❌ 처리 중 오류가 발생했습니다: ${error.message}`, 'error');
+                let successfulChunks = 0;
+
+                // 각 청크 순차 전송
+                for (let i = 0; i < chunks.length; i++) {
+                    try {
+                        const chunkData = {
+                            conversation: chunks[i],
+                            processing_mode: 'chunked',
+                            timestamp: timestamp,
+                            source_file: '직접 입력',
+                            session_id: sessionId,
+                            chunk_index: i,
+                            total_chunks: chunks.length,
+                            chunk_size: chunks[i].length,
+                            is_first_chunk: i === 0,
+                            is_last_chunk: i === chunks.length - 1
+                        };
+
+                        const params = new URLSearchParams(chunkData);
+                        const chunkUrl = `${webhook}?${params.toString()}`;
+
+                        console.log(`📤 청크 ${i + 1}/${chunks.length} 전송:`, {
+                            chunk_size: chunks[i].length,
+                            url_length: chunkUrl.length
+                        });
+
+                        addStatus(`📦 청크 ${i + 1}/${chunks.length} 전송 중... (${chunks[i].length}자)`, 'info');
+
+                        // GET 요청으로 전송
+                        await fetch(chunkUrl, {
+                            method: 'GET',
+                            mode: 'no-cors'
+                        });
+
+                        successfulChunks++;
+                        totalChunks++;
+
+                        // 진행률 업데이트
+                        const progress = ((i + 1) / chunks.length) * 100;
+                        progressBar.style.width = progress + '%';
+
+                        addStatus(`✅ 청크 ${i + 1} 전송 완료`, 'success');
+
+                        // 청크 간 딜레이 (서버 부하 방지)
+                        if (i < chunks.length - 1) {
+                            await new Promise(resolve => setTimeout(resolve, 500));
+                        }
+
+                    } catch (chunkError) {
+                        console.error(`청크 ${i + 1} 전송 오류:`, chunkError);
+                        addStatus(`❌ 청크 ${i + 1} 전송 실패: ${chunkError.message}`, 'error');
+                    }
                 }
+
+                // 최종 결과
+                if (successfulChunks === chunks.length) {
+                    addStatus(`🎉 모든 청크 전송 완료! (${successfulChunks}/${chunks.length})`, 'success');
+                    addStatus('🔄 Zapier에서 청크 재조립 및 ChatGPT 분석 진행 중...', 'info');
+                    sessionCount++;
+                    successCount++;
+                } else {
+                    addStatus(`⚠️ 부분 성공: ${successfulChunks}/${chunks.length} 청크 전송됨`, 'error');
+                }
+
+                totalAttempts++;
+                updateStats();
+
+            } catch (error) {
+                console.error('전송 오류:', error);
+                addStatus(`❌ 전송 실패: ${error.message}`, 'error');
+                totalAttempts++;
+                updateStats();
             } finally {
-                // 버튼 복원
                 processBtn.disabled = false;
-                processBtn.innerHTML = '<span class="btn-text">🚀 분석 & 저장</span>';
+                processBtn.innerHTML = '🚀 분석 & 저장';
+                
+                // 진행률 바 숨기기
+                setTimeout(() => {
+                    document.getElementById('chunkProgress').style.display = 'none';
+                }, 3000);
             }
         }
 
-        // 다음 세션을 위한 초기화
-        function resetForNextSession() {
-            sessionContent.value = '';
-            uploadedFileContent = '';
-            uploadedFileName = '';
-            fileInfo.classList.add('hidden');
-            fileInput.value = '';
+        // 상태 표시 함수
+        function addStatus(message, type = 'info') {
+            const statusDisplay = document.getElementById('statusDisplay');
+            const statusContent = document.getElementById('statusContent');
+            
+            statusDisplay.style.display = 'block';
+            
+            const statusItem = document.createElement('div');
+            statusItem.className = `status-item status-${type}`;
+            statusItem.innerHTML = `${new Date().toLocaleTimeString()} - ${message}`;
+            
+            statusContent.appendChild(statusItem);
+            statusContent.scrollTop = statusContent.scrollHeight;
         }
 
-        // 이벤트 리스너
-        processBtn.addEventListener('click', processSession);
+        // 통계 업데이트
+        function updateStats() {
+            document.getElementById('sessionCount').textContent = sessionCount;
+            document.getElementById('totalChunks').textContent = totalChunks;
+            
+            const rate = totalAttempts > 0 ? Math.round((successCount / totalAttempts) * 100) : 100;
+            document.getElementById('successRate').textContent = rate + '%';
+        }
 
-        // 엔터키로 처리 (Ctrl+Enter)
-        sessionContent.addEventListener('keydown', (e) => {
-            if (e.ctrlKey && e.key === 'Enter') {
-                processSession();
-            }
-        });
-
-        // 초기 통계 표시
-        updateStats();
-
-        // 페이지 로드 시 안내 메시지
-        window.addEventListener('load', () => {
-            showStatus('🧠 Neural Memory System v4.0 (FormData 완벽 버전)이 준비되었습니다!', 'info');
+        // 페이지 로드시 초기화
+        document.addEventListener('DOMContentLoaded', function() {
+            addStatus('🧠 Neural Memory System v4.0 준비 완료', 'success');
+            addStatus('🔄 스마트 분할 전송 시스템 활성화', 'info');
+            addStatus('📏 무제한 길이 지원 - 자동 청크 분할', 'info');
+            updateChunkInfo();
         });
     </script>
 </body>
