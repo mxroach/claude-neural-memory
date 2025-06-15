@@ -472,7 +472,7 @@
             showStatus('🧠 신경망 분석을 시작합니다...', 'info');
 
             try {
-                // FormData 방식으로 데이터 준비 (Zapier 완벽 호환)
+                // FormData 방식으로 데이터 준비 (2025년 검증된 방법)
                 const finalContent = uploadedFileContent || content;
                 const formData = new FormData();
                 
@@ -482,15 +482,15 @@
                 formData.append('memory_depth', 'auto');
                 formData.append('timestamp', new Date().toISOString());
                 formData.append('source_file', uploadedFileName || "직접 입력");
-                formData.append('file_size', uploadedFileContent ? uploadedFileContent.length : content.length);
-                formData.append('user_agent', navigator.userAgent);
+                formData.append('file_size', (uploadedFileContent ? uploadedFileContent.length : content.length).toString());
                 formData.append('session_id', Date.now().toString());
 
-                console.log("📤 Zapier로 전송 (FormData):", {
+                console.log("📤 Zapier로 전송 (FormData - 2025년 검증):", {
                     conversation: finalContent.substring(0, 100) + '...',
                     processing_mode: 'complete',
                     timestamp: new Date().toISOString(),
-                    source_file: uploadedFileName || "직접 입력"
+                    source_file: uploadedFileName || "직접 입력",
+                    session_id: Date.now()
                 });
                 
                 // FormData 방식으로 전송 (CORS 우회 + Zapier 호환)
@@ -509,7 +509,7 @@
                 stats.sessionCount++;
                 updateStats();
                 
-                showStatus(`✅ 분석 & 저장 완료! (${processingTime}초 소요) - Zapier에서 개별 필드로 처리 중입니다.`, 'success');
+                showStatus(`✅ Step 1 완료! (${processingTime}초) - Zapier에서 FormData 수신 중입니다.`, 'success');
                 
                 // 자동 초기화로 다음 세션 준비
                 resetForNextSession();
